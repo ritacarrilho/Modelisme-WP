@@ -1,0 +1,19 @@
+name: occitanie-wp
+recipe: wordpress
+config:
+  webroot: .
+services:
+  database:
+    type: mysql
+    portforward: 3307
+    creds:
+      user: lamp
+      password: lamp
+      database: lamp
+tooling:
+  install:
+    service: appserver
+    description: "commande pour installer wordpress"
+    cmd:
+      - echo Istallation Wordpress...
+      - php config/install_wp.php  
