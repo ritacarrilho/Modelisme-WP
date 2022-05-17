@@ -6,7 +6,7 @@ if(! class_exists('WP_List_Table')) { // prevenir de bug em que a class da qual 
 
 require_once plugin_dir_path(__FILE__) ."/service/Ern_Database_service.php";
 
-class Ern_List extends WP_List_Table // class que cria a interface do backoffice
+class Category_List extends WP_List_Table // class que cria a interface do backoffice
 {
     private $dal;
 
@@ -56,15 +56,9 @@ class Ern_List extends WP_List_Table // class que cria a interface do backoffice
         // var_dump($column_name);
         switch($column_name) {
             case 'id':
-            case 'last_name':
-            case 'first_name':
-            case 'email':
-            case 'phone':
-            // case 'subscription':
+            case 'name':
                 return $item->$column_name;
                 break;
-            case 'subscription':
-                return ($item->$column_name == 0) ? 'Not subscribed' : 'Subscribed';
             default:
                 return print_r($item, true);
         }
@@ -82,11 +76,7 @@ class Ern_List extends WP_List_Table // class que cria a interface do backoffice
     public function get_columns() { // predifinir todos os elementos das colunas e retornar o valor
         $columns = [
             'id' => 'id',
-            'last_name' => 'First Name',
-            'first_name' => 'Last Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'subscription' => 'Subscription'
+            'name' => 'Competition Name',
         ];
 
         return $columns;
@@ -99,11 +89,8 @@ class Ern_List extends WP_List_Table // class que cria a interface do backoffice
     public function get_sortable_columns() {
         // triagem do que se afficha ou nao no backoffice (ex mostrar consoante o id ou o nome) - definir os campos que é possivel fazer triagem ou nao
         return $sortable = [ 'id' => ['id', true], 
-                            'last_name' => ['last_name', true],
-                            'first_name' => ['first_name', true],
-                            // 'email' => ['email', false],
-                            // 'phone' => ['phone', false],
-                            // 'subscription' => ['id', false]
+                            'name' => ['name', true],
+                            'first_name' => ['first_name', true]
         ];
     }
 }

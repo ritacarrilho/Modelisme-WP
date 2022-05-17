@@ -31,14 +31,69 @@ class Modelisme
             "dashicons-car", 
             40
         );
+// add submenus to the client menu
+       add_submenu_page(
+           'occitanieModelisme',
+           'All Occitanie Clubs', 
+           'Clubs', 
+           'manage_options', 
+           'addClub', 
+           [$this, 'modelisme_clubs']
+        ); 
 
-       add_submenu_page('Categories', 'Add a client', 'Add', 'manage_options', 'addClient', [$this, 'modelisme_competition']); // add a submenu to the client menu
+        add_submenu_page(
+            'occitanieModelisme',
+            'The Club\'s Members', 
+            'Members', 
+            'manage_options', 
+            'addMember', 
+            [$this, 'modelisme_members']
+         ); 
+
+         add_submenu_page(
+            'occitanieModelisme',
+            'Competition\'s Categories', 
+            'Categories', 
+            'manage_options', 
+            'addCategory', 
+            [$this, 'modelisme_categories']
+         ); 
+
+         add_submenu_page(
+            'occitanieModelisme',
+            'Scores', 
+            'Scores', 
+            'manage_options', 
+            'addScore', 
+            [$this, 'modelisme_scores']
+         ); 
     }
 
     public function modelisme_competition() {
         echo "<h2>" . get_admin_page_title() . "</h2>";
 
+        $db = new Modelisme_Database_service; // call the DB
         
+    }
+
+    public function modelisme_clubs() {
+        echo "<h2>" . get_admin_page_title() . "</h2>";
+
+    }
+
+    public function modelisme_members() {
+        echo "<h2>" . get_admin_page_title() . "</h2>";
+
+    }    
+    
+    public function modelisme_categories() {
+        echo "<h2>" . get_admin_page_title() . "</h2>";
+
+    }
+
+    public function modelisme_scores() {
+        echo "<h2>" . get_admin_page_title() . "</h2>";
+
     }
 }
 
