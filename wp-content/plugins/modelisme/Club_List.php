@@ -3,7 +3,7 @@ if(! class_exists('WP_List_Table')) { // prevent bug
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 } 
 
-require_once plugin_dir_path(__FILE__) ."/service/Ern_Database_service.php";
+require_once plugin_dir_path(__FILE__) ."/service/Modelisme_Database_service.php";
 
 class Club_List extends WP_List_Table 
 {

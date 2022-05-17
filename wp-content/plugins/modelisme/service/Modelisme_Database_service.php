@@ -270,6 +270,13 @@ class Modelisme_Database_service
 
         return $result;
     }
+    public function findAllAddresses() {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}addresses;");
+
+        return $result;
+    }
+
         // method to save client
         public function save_category() {
             global $wpdb;

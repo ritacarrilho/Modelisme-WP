@@ -11,6 +11,8 @@
  */
 
 require_once plugin_dir_path(__FILE__) . 'modelisme/service/Modelisme_Database_service.php';
+require_once plugin_dir_path(__FILE__) . 'modelisme/Club_List.php';
+
 
 class Modelisme 
 {
@@ -76,8 +78,77 @@ class Modelisme
         
     }
 
+    
     public function modelisme_clubs() {
         echo "<h2>" . get_admin_page_title() . "</h2>";
+
+        $db = new Modelisme_Database_service; // appel du service de base
+
+        $table = new Club_List;
+            $table->prepare_items();
+            echo $table->display(); // gera o html da tabela para ser possivel affichardd
+
+            // começa o display da tabela - cabeçalho
+            echo '<table class="table-border">';
+            echo '<tr>';
+            echo '<td><strong>Name</strong><td>';
+            echo '<td><strong>Email</strong><td>';
+            echo '<td><strong>Phone</strong><td>';
+            echo '<td><strong>Domaine</strong><td>';
+            echo '<td><strong>Address</strong><td>';
+            echo '<td><strong>Participant</strong><td>';
+            echo '</tr>';
+
+            // echo '<pre>'; var_dump($_POST); echo '</pre>';
+
+            foreach($db->findAllClubs() as $club) { // afficher lista de todos os clients presentes na tabela com botao de delete
+                echo '<tr>';
+                echo '<td>' . $club->name . '<td>';
+                echo '<td>' . $club->email . '<td>';
+                echo '<td>' . $club->email . '<td>';
+                echo '<td>' . $club->phone . '<td>';
+                echo '<td>' . $club->domaine . '<td>';
+                echo '<td>' . $club->address_id . '<td>';
+                echo '<td>' . (($club->participant == 0) ? "Club in not participant" : "Club is participant") . '<td>';
+                echo '<td><form method="post">' .
+                            '<input type="hidden" name="action" value="del" />' . 
+                            '<input type="hidden" name="id" value="' . $club->id .'" />' . 
+                            '<input type="submit" value="del"/>' .
+                    '</form></td>';
+                echo '</tr>';
+                
+            }
+            echo '</table>';
+        
+
+            echo '<form method="post">' . 
+                '<input type="hidden" name="send" value="ok"/>' .
+                '<div><label for="name"> Name : </label>' . 
+                '<input type="text" id="name" name="name" class="widefat" required /></div>' .
+
+                '<div><label for="email"> Email : </label>' . 
+                '<input type="text" id="email" name="email" class="widefat" required /></div>' .
+
+                '<div><label for="phone"> Phone : </label>' . 
+                '<input type="text" id="phone" name="phone" class="widefat" required /></div>' .
+
+                '<div><label for="domaine"> Domaine : </label>' . 
+                '<input type="text" id="domaine" name="domaine" class="widefat" required /></div>' .
+
+                '<div><label for="address"> Address : </label>' . 
+                '<select id="address" name="address">';
+
+
+
+                foreach($db->findAllAddresses() as $address) {
+                    echo '<option name="address" value="'. $address->name .'">' . $address->name . '</option> ';
+                }
+                echo '</select>' .
+
+                '<input type="radio" name="subscription" class="widefat" value="true" checked/> Yes' .
+
+                '<div> <input type="submit" value="Add"/></div></form>';
+        
 
     }
 
