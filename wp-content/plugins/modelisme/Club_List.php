@@ -83,7 +83,7 @@ class Club_List extends WP_List_Table
         $columns = [
             'id' => 'id',
             'name' => 'Name',
-            'domain' => 'Domaine',
+            'cat_domain' => 'Domaine',
             'participant' => 'Participant'
         ];
 

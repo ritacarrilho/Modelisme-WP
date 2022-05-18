@@ -122,7 +122,7 @@ class Modelisme
                 echo '<td>' . $club->name . '<td>';
                 echo '<td>' . $club->email . '<td>';
                 echo '<td>' . $club->phone . '<td>';
-                echo '<td>' . $db->findClubDomain()->name . '<td>';
+                echo '<td>' . $db->findClubDomain()[0]->cat_domain . '<td>';
                 // var_dump($db->findAddressPerClub($club->id));
                 echo '<td>' . $db->findAddressPerClub($club->id)->street . ", " . $db->findAddressPerClub($club->id)->city . ", " . $db->findAddressPerClub($club->id)->zip_code . '<td>';
 

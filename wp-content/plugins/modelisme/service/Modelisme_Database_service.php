@@ -113,8 +113,16 @@ class Modelisme_Database_service
                  'domain' => 1,
                  'participant' => 1,
                  'address_id' => 1
-
             ] );
+
+            $wpdb->insert( "{$wpdb->prefix}clubs", [
+                'name' => 'Les Dragons',
+                'email' => 'dragons@email.fr',
+                'phone' => '021465398',
+                'domain' => 1,
+                'participant' => 1,
+                'address_id' => 1
+           ] );
         }
 
         // TABLE ADHERENTS
@@ -273,8 +281,8 @@ class Modelisme_Database_service
         global $wpdb;
         $result = $wpdb->get_results("SELECT {$wpdb->prefix}clubs.*, {$wpdb->prefix}categories.name AS cat_domain FROM {$wpdb->prefix}clubs JOIN {$wpdb->prefix}categories ON {$wpdb->prefix}clubs.domain = {$wpdb->prefix}categories.id;");
 
-        // var_dump($result);
-        return $result[0];
+        // echo '<pre>'; var_dump($result); echo '</pre>';
+        return $result;
     }
 
     public function findAddressPerClub($id) {
