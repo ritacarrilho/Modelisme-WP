@@ -84,71 +84,91 @@ class Modelisme
 
         $db = new Modelisme_Database_service; // appel du service de base
 
+        // if($_REQUEST['page'] == 'ernClient' || $_POST['send'] == 'ok' || $_POST['action'] == 'del') { // $_REQUEST nao interessa se é POST ou GET || se o formulario ofr enviado o input hidden envia em post 'send' = 'ok'
+
+
+        //     if(isset($_POST['send']) && $_POST['send'] == 'ok') { // guardar dados do form na tabela, isset evita ter uma warning
+        //         $db->save_club();
+        //     }
+
+        //     if(isset($_POST['action']) && $_POST['action'] == 'del') { // guardar dados do form na tabela
+        //         $db->delete_club($_POST['id']);
+        //     }
+
         $table = new Club_List;
             $table->prepare_items();
             echo $table->display(); // gera o html da tabela para ser possivel affichardd
 
-            // começa o display da tabela - cabeçalho
-            echo '<table class="table-border">';
-            echo '<tr>';
-            echo '<td><strong>Name</strong><td>';
-            echo '<td><strong>Email</strong><td>';
-            echo '<td><strong>Phone</strong><td>';
-            echo '<td><strong>Domaine</strong><td>';
-            echo '<td><strong>Address</strong><td>';
-            echo '<td><strong>Participant</strong><td>';
-            echo '</tr>';
+            echo '<input type="button" value="Show details" class="btn btn-outline-secondary"/>';
 
+            // começa o display da tabela - cabeçalho
+            echo '<table class="table-striped ">';
+            echo '<thead>';
+            echo '<tr>';
+            echo '<th scope="col"><strong>ID</strong><th>';
+            echo '<th scope="col"><strong>Name</strong><th>';
+            echo '<th scope="col"><strong>Email</strong><th>';
+            echo '<th scope="col"><strong>Phone</strong><th>';
+            echo '<th scope="col"><strong>Domaine</strong><th>';
+            echo '<th scope="col"><strong>Address</strong><th>';
+            echo '<th scope="col"><strong>Participant</strong><th>';
+            echo '</tr>';
+            echo '</thead>';
             // echo '<pre>'; var_dump($_POST); echo '</pre>';
 
-            foreach($db->findAllClubs() as $club) { // afficher lista de todos os clients presentes na tabela com botao de delete
+            foreach($db->findAll('clubs') as $club) { // afficher lista de todos os clients presentes na tabela com botao de delete
                 echo '<tr>';
+                echo '<td>' . $club->id . '<td>';
                 echo '<td>' . $club->name . '<td>';
                 echo '<td>' . $club->email . '<td>';
-                echo '<td>' . $club->email . '<td>';
                 echo '<td>' . $club->phone . '<td>';
-                echo '<td>' . $club->domaine . '<td>';
-                echo '<td>' . $club->address_id . '<td>';
-                echo '<td>' . (($club->participant == 0) ? "Club in not participant" : "Club is participant") . '<td>';
+                echo '<td>' . $db->findClubDomain()->name . '<td>';
+                // var_dump($db->findAddressPerClub($club->id));
+                echo '<td>' . $db->findAddressPerClub($club->id)->street . ", " . $db->findAddressPerClub($club->id)->city . ", " . $db->findAddressPerClub($club->id)->zip_code . '<td>';
+
+                echo '<td>' . (($club->participant === 0) ? "Club in not participant" : "Club is participant") . '<td>';
                 echo '<td><form method="post">' .
                             '<input type="hidden" name="action" value="del" />' . 
                             '<input type="hidden" name="id" value="' . $club->id .'" />' . 
                             '<input type="submit" value="del"/>' .
                     '</form></td>';
-                echo '</tr>';
-                
-            }
+                echo '</tr>'; }
+            
             echo '</table>';
-        
-
+        // } else  {
             echo '<form method="post">' . 
-                '<input type="hidden" name="send" value="ok"/>' .
-                '<div><label for="name"> Name : </label>' . 
-                '<input type="text" id="name" name="name" class="widefat" required /></div>' .
+            '<input type="hidden" name="send" value="ok"/>' .
+            '<div><label for="name"> Name : </label>' . 
+            '<input type="text" id="name" name="name" class="widefat" required /></div>' .
 
-                '<div><label for="email"> Email : </label>' . 
-                '<input type="text" id="email" name="email" class="widefat" required /></div>' .
+            '<div><label for="email"> Email : </label>' . 
+            '<input type="text" id="email" name="email" class="widefat" required /></div>' .
 
-                '<div><label for="phone"> Phone : </label>' . 
-                '<input type="text" id="phone" name="phone" class="widefat" required /></div>' .
+            '<div><label for="phone"> Phone : </label>' . 
+            '<input type="text" id="phone" name="phone" class="widefat" required /></div>' .
 
-                '<div><label for="domaine"> Domaine : </label>' . 
-                '<input type="text" id="domaine" name="domaine" class="widefat" required /></div>' .
+            '<div><label for="domaine"> Domaine : </label>' . 
+            '<input type="text" id="domaine" name="domaine" class="widefat" required /></div>' .
 
-                '<div><label for="address"> Address : </label>' . 
-                '<select id="address" name="address">';
+            '<div><label for="street"> Street : </label>' . 
+            '<input type="text" id="street" name="street" class="widefat" required /></div>' .
+            '<div><label for="address"> City : </label>' . 
+            '<input type="text" id="city" name="city" class="widefat" required /></div>' .            
+            '<div><label for="address"> Zip-Code : </label>' . 
+            '<input type="text" id="zip-code" name="zip-code" class="widefat" required /></div>' .
 
+            // '<select id="address" name="address">';
 
-
-                foreach($db->findAllAddresses() as $address) {
-                    echo '<option name="address" value="'. $address->name .'">' . $address->name . '</option> ';
-                }
-                echo '</select>' .
-
-                '<input type="radio" name="subscription" class="widefat" value="true" checked/> Yes' .
-
-                '<div> <input type="submit" value="Add"/></div></form>';
-        
+            // foreach($db->findAll('addresses') as $address) {
+            //     echo '<option name="address" value="'. $address->street . $address->city .'">' . $address->street . " " . $address->city . '</option> ';
+            // }
+            // echo '</select>' .
+            '<div><label for="domaine"> Participant : </label>' . 
+            '<input type="radio" name="participant" class="widefat" value="true" /> Yes' .
+            '<input type="radio" name="not-participant" class="widefat" value="true" /> No' .
+            '<div> <input type="submit" value="Add"/></div></form>';
+        // }
+        // ADD CLUBS FORM
 
     }
 

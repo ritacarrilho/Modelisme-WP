@@ -96,7 +96,7 @@ class Modelisme_Database_service
                         "name VARCHAR(255) NOT NULL, " .
                         "email VARCHAR(255) NOT NULL, " .
                         "phone VARCHAR(100) NOT NULL, " .
-                        "domain VARCHAR(150) NOT NULL, " .
+                        "domain INT NOT NULL, " .
                         "participant BOOLEAN NOT NULL, " . 
                         "address_id INT NOT NULL " . 
                         ");"
@@ -110,7 +110,7 @@ class Modelisme_Database_service
                  'name' => 'Perpignan Moteurs Thermiques Club',
                  'email' => 'moteurs_perpi@email.fr',
                  'phone' => '0756412399',
-                 'domain' => 'Course de modèles réduits automobiles à moteurs thermiques',
+                 'domain' => 1,
                  'participant' => 1,
                  'address_id' => 1
 
@@ -194,6 +194,11 @@ class Modelisme_Database_service
                         "FOREIGN KEY (address_id) " .
                         "REFERENCES {$wpdb->prefix}addresses(id);");
 
+        $wpdb->query("ALTER TABLE {$wpdb->prefix}clubs " . 
+                        "ADD CONSTRAINT fk_club_categories " .
+                        "FOREIGN KEY (domain) " .
+                        "REFERENCES {$wpdb->prefix}categories(id);");
+
         $wpdb->query("ALTER TABLE {$wpdb->prefix}adherents " . 
                         "ADD CONSTRAINT fk_adherents_address " .
                         "FOREIGN KEY (address_id) " .
@@ -257,52 +262,68 @@ class Modelisme_Database_service
         $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");
     }
 
-    public function findAll() {
+    public function findAll($table) {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}categories;");
+        $result = $wpdb->get_results(sprintf("SELECT * FROM {$wpdb->prefix}%s;", $table));
 
         return $result;
     }
 
-    public function findAllClubs() {
+    public function findClubDomain() {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}clubs;");
+        $result = $wpdb->get_results("SELECT {$wpdb->prefix}clubs.*, {$wpdb->prefix}categories.name AS cat_domain FROM {$wpdb->prefix}clubs JOIN {$wpdb->prefix}categories ON {$wpdb->prefix}clubs.domain = {$wpdb->prefix}categories.id;");
 
-        return $result;
+        // var_dump($result);
+        return $result[0];
     }
-    public function findAllAddresses() {
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}addresses;");
 
-        return $result;
+    public function findAddressPerClub($id) {
+        global $wpdb;        
+        // var_dump($id);
+        $result = $wpdb->get_results(sprintf("SELECT {$wpdb->prefix}clubs.*, {$wpdb->prefix}addresses.city, {$wpdb->prefix}addresses.street, {$wpdb->prefix}addresses.zip_code  from {$wpdb->prefix}clubs join {$wpdb->prefix}addresses on {$wpdb->prefix}clubs.address_id = {$wpdb->prefix}addresses.id WHERE {$wpdb->prefix}clubs.id = %s;", $id));
+    // var_dump($result);
+        return $result[0];
     }
+
+    // public function findAllAndAddress() {
+    //     global $wpdb;        
+    //     // var_dump($id);
+    //     $result = $wpdb->get_results("
+    //                                     SELECT {$wpdb->prefix}clubs.id, {$wpdb->prefix}clubs.name, {$wpdb->prefix}clubs.email, {$wpdb->prefix}clubs.phone, {$wpdb->prefix}clubs.domain, {$wpdb->prefix}clubs.participant, {$wpdb->prefix}clubs.address_id, {$wpdb->prefix}addresses.city, {$wpdb->prefix}addresses.street, {$wpdb->prefix}addresses.zip_code 
+    //                                     FROM {$wpdb->prefix}clubs 
+    //                                     JOIN {$wpdb->prefix}addresses 
+    //                                     ON {$wpdb->prefix}clubs.address_id = {$wpdb->prefix}addresses.id" 
+    //                                 );
+    // var_dump($result);
+    //     return $result[0];
+    // }
 
         // method to save client
-        public function save_category() {
-            global $wpdb;
-            // aray com recuperaçao os dados passados atraves do metodo post (do form)
-            $values = [
-                'name' => $_POST['name'],
-            ];
+        public function save_club() {
+            // global $wpdb;
+            // // aray com recuperaçao os dados passados atraves do metodo post (do form)
+            // $values = [
+            //     'name' => $_POST['name'],
+            // ];
     
-            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories;"); // query para saber se o email ja existe
+            // $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories;"); // query para saber se o email ja existe
     
-            if(is_null($row)) {
-                $wpdb->insert("{$wpdb->prefix}categories", $values); // inserir na base de dados
-            }
+            // if(is_null($row)) {
+            //     $wpdb->insert("{$wpdb->prefix}categories", $values); // inserir na base de dados
+            // }
     
         }
     
         // delete clients from DB
-        public function delete_category( $ids ) {
-            global $wpdb;
+        public function delete_club( $ids ) {
+            // global $wpdb;
     
-            //
-            if(!is_array($ids)) { // if the parameter is not an array
-                $ids = array($ids);
-            }
+            // //
+            // if(!is_array($ids)) { // if the parameter is not an array
+            //     $ids = array($ids);
+            // }
     
-            $wpdb->query("DELETE FROM {$wpdb->prefix}categories" . "WHERE id IN (" . implode(',', $ids) . ")");
+            // $wpdb->query("DELETE FROM {$wpdb->prefix}categories" . "WHERE id IN (" . implode(',', $ids) . ")");
         }
     
 

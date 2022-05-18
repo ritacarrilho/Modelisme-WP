@@ -33,8 +33,10 @@ class Club_List extends WP_List_Table
         $current_page = $this->get_pagenum(); // envia o numero da pagina em que estamos
 
         // dados
-        $data = $this->dal->findAllClubs();
-        $total_pages = count($data); // contar o numero total de paginas
+        // $data = $this->dal->findAllAndAddress('clubs');
+        $data = $this->dal->findClubDomain();
+
+       $total_pages = count($data);    //contar o numero total de paginas
 
         // tri 
         usort($data, array(&$this, 'usort_reorder')); // triagem de dados - modifica directamente os dados
@@ -53,21 +55,20 @@ class Club_List extends WP_List_Table
     public function column_default($item, $column_name) { // hidrataçao de dados - procurar o valor na tabela em funçao do index - cada linha transforma-se num objecto
         // affichar os dados na tabela
         // var_dump($column_name);
+        // aqui mete-se o alias dado na request
         switch($column_name) {
             case 'id':
             case 'name':
-            case 'email':
-            case 'phone':
-            case 'domaine':
-            case 'address_id':
-            case 'participant':
+            case 'cat_domain':
                 return $item->$column_name;
+                break;
+            case 'participant':
+                return ($item->$column_name == 0) ? "Club in not participant" : "Club is participant";
                 break;
             default:
                 return print_r($item, true);
         }
     } 
-
 
     public function usort_reorder($a, $b) { // compara os dois valores
         // coluna sobre a qual vamos triar
@@ -82,10 +83,7 @@ class Club_List extends WP_List_Table
         $columns = [
             'id' => 'id',
             'name' => 'Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'domaine' => 'Domaine',
-            'address_id' => 'Address',
+            'domain' => 'Domaine',
             'participant' => 'Participant'
         ];
 
@@ -99,11 +97,8 @@ class Club_List extends WP_List_Table
     public function get_sortable_columns() {
         // triagem do que se afficha ou nao no backoffice (ex mostrar consoante o id ou o nome) - definir os campos que é possivel fazer triagem ou nao
         return $sortable = [ 'id' => ['id', true], 
-                            'last_name' => ['last_name', true],
-                            'first_name' => ['first_name', true],
-                            // 'email' => ['email', false],
-                            // 'phone' => ['phone', false],
-                            // 'subscription' => ['id', false]
+                            'name' => ['name', true],
+                            'subscription' => ['id', false]
         ];
     }
 }
