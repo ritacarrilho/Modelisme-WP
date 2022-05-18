@@ -97,8 +97,7 @@ class Club_List extends WP_List_Table
     public function get_sortable_columns() {
         // triagem do que se afficha ou nao no backoffice (ex mostrar consoante o id ou o nome) - definir os campos que é possivel fazer triagem ou nao
         return $sortable = [ 'id' => ['id', true], 
-                            'name' => ['name', true],
-                            'subscription' => ['id', false]
+                            'name' => ['name', true]
         ];
     }
 }

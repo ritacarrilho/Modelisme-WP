@@ -56,6 +56,12 @@ class Modelisme_Database_service
                 'city' => 'Perpignan',
                 'zip_code' => '66000'
            ] );
+
+           $wpdb->insert( "{$wpdb->prefix}addresses", [
+            'street' => 'Quoi Vouban',
+            'city' => 'Montpelier',
+            'zip_code' => '34000'
+       ] );
         }
 
         // TABLE COMPETITIONS
@@ -118,10 +124,10 @@ class Modelisme_Database_service
             $wpdb->insert( "{$wpdb->prefix}clubs", [
                 'name' => 'Les Dragons',
                 'email' => 'dragons@email.fr',
-                'phone' => '021465398',
+                'phone' => '071465398',
                 'domain' => 1,
                 'participant' => 1,
-                'address_id' => 1
+                'address_id' => 3
            ] );
         }
 
@@ -306,33 +312,38 @@ class Modelisme_Database_service
     //     return $result[0];
     // }
 
-        // method to save client
+    // method to save client
         public function save_club() {
-            // global $wpdb;
-            // // aray com recuperaçao os dados passados atraves do metodo post (do form)
-            // $values = [
-            //     'name' => $_POST['name'],
-            // ];
+            global $wpdb;
+
+            //  recover data from method post 
+            $values = [
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'phone' => $_POST['phone'],
+                'street' => $_POST['street'],
+                'city' => $_POST['city'],
+                'zip_code' => $_POST['zip_code'],
+                'domain' => $_POST['domain'],
+                'participant' => filter_var($_POST['participant'], FILTER_VALIDATE_BOOLEAN),
+            ];
+
+            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}clubs WHERE email='" . $values['email'].";"); // query para saber se o email ja existe
     
-            // $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories;"); // query para saber se o email ja existe
-    
-            // if(is_null($row)) {
-            //     $wpdb->insert("{$wpdb->prefix}categories", $values); // inserir na base de dados
-            // }
-    
+            if(is_null($row)) {
+                $wpdb->insert("{$wpdb->prefix}clubs", $values);
+            }
         }
     
         // delete clients from DB
         public function delete_club( $ids ) {
-            // global $wpdb;
+            global $wpdb;
     
-            // //
-            // if(!is_array($ids)) { // if the parameter is not an array
-            //     $ids = array($ids);
-            // }
+            //
+            if(!is_array($ids)) { // if the parameter is not an array
+                $ids = array($ids);
+            }
     
-            // $wpdb->query("DELETE FROM {$wpdb->prefix}categories" . "WHERE id IN (" . implode(',', $ids) . ")");
+            $wpdb->query("DELETE FROM {$wpdb->prefix}clubs" . "WHERE id IN (" . implode(',', $ids) . ")");
         }
-    
-
 }

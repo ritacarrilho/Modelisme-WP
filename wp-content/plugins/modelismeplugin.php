@@ -39,7 +39,7 @@ class Modelisme
            'All Occitanie Clubs', 
            'Clubs', 
            'manage_options', 
-           'addClub', 
+           'allClubs', 
            [$this, 'modelisme_clubs']
         ); 
 
@@ -70,7 +70,7 @@ class Modelisme
             [$this, 'modelisme_scores']
          ); 
     }
-
+// COMPETITIONS 
     public function modelisme_competition() {
         echo "<h2>" . get_admin_page_title() . "</h2>";
 
@@ -78,30 +78,31 @@ class Modelisme
         
     }
 
-    
-    public function modelisme_clubs() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
+// CLUBS 
+public function modelisme_clubs() {
+    echo "<h2>" . get_admin_page_title() . "</h2>";
 
-        $db = new Modelisme_Database_service; // appel du service de base
+    $db = new Modelisme_Database_service; // appel du service de base
 
-        // if($_REQUEST['page'] == 'ernClient' || $_POST['send'] == 'ok' || $_POST['action'] == 'del') { // $_REQUEST nao interessa se é POST ou GET || se o formulario ofr enviado o input hidden envia em post 'send' = 'ok'
+    //if($_REQUEST['page'] == 'allClubs' || $_POST['send'] == 'ok' || $_POST['action'] == 'del') { // $_REQUEST nao interessa se é POST ou GET || se o formulario ofr enviado o input hidden envia em post 'send' = 'ok'
 
+        if(isset($_POST['send']) && $_POST['send'] == 'ok') { // guardar dados do form na tabela, isset evita ter uma warning
+            $db->save_club();
+        }
 
-        //     if(isset($_POST['send']) && $_POST['send'] == 'ok') { // guardar dados do form na tabela, isset evita ter uma warning
-        //         $db->save_club();
-        //     }
-
-        //     if(isset($_POST['action']) && $_POST['action'] == 'del') { // guardar dados do form na tabela
-        //         $db->delete_club($_POST['id']);
-        //     }
+        if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete club from database
+            $db->delete_club($_POST['id']);
+        }
 
         $table = new Club_List;
             $table->prepare_items();
             echo $table->display(); // gera o html da tabela para ser possivel affichardd
 
             echo '<input type="button" value="Show details" class="btn btn-outline-secondary"/>';
+            echo '<input type="button" value="Add Club" class="btn btn-outline-secondary"/>';
 
-            // começa o display da tabela - cabeçalho
+
+            // Table header
             echo '<table class="table-striped ">';
             echo '<thead>';
             echo '<tr>';
@@ -135,8 +136,9 @@ class Modelisme
                 echo '</tr>'; }
             
             echo '</table>';
-        // } else  {
-            echo '<form method="post">' . 
+       // } else  { // save new club formulary
+            echo '<h3>Add new Club</h3> '.
+            '<form method="post">' . 
             '<input type="hidden" name="send" value="ok"/>' .
             '<div><label for="name"> Name : </label>' . 
             '<input type="text" id="name" name="name" class="widefat" required /></div>' .
@@ -147,8 +149,8 @@ class Modelisme
             '<div><label for="phone"> Phone : </label>' . 
             '<input type="text" id="phone" name="phone" class="widefat" required /></div>' .
 
-            '<div><label for="domaine"> Domaine : </label>' . 
-            '<input type="text" id="domaine" name="domaine" class="widefat" required /></div>' .
+            // '<div><label for="domaine"> Domaine : </label>' . 
+            // '<input type="text" id="domaine" name="domaine" class="widefat" required /></div>' .
 
             '<div><label for="street"> Street : </label>' . 
             '<input type="text" id="street" name="street" class="widefat" required /></div>' .
@@ -157,19 +159,17 @@ class Modelisme
             '<div><label for="address"> Zip-Code : </label>' . 
             '<input type="text" id="zip-code" name="zip-code" class="widefat" required /></div>' .
 
-            // '<select id="address" name="address">';
-
-            // foreach($db->findAll('addresses') as $address) {
-            //     echo '<option name="address" value="'. $address->street . $address->city .'">' . $address->street . " " . $address->city . '</option> ';
-            // }
-            // echo '</select>' .
+            '<select id="domain" name="domain">';
+            foreach($db->findAll('categories') as $category) {
+                // var_dump($category->name);
+                echo '<option name="domain" value="'. $category->id . '">'. $category->name .'</option>';
+            }
+            echo '</select>' .
             '<div><label for="domaine"> Participant : </label>' . 
             '<input type="radio" name="participant" class="widefat" value="true" /> Yes' .
             '<input type="radio" name="not-participant" class="widefat" value="true" /> No' .
             '<div> <input type="submit" value="Add"/></div></form>';
-        // }
-        // ADD CLUBS FORM
-
+       // }
     }
 
     public function modelisme_members() {
