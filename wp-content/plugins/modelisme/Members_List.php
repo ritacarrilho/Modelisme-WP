@@ -5,7 +5,7 @@ if(! class_exists('WP_List_Table')) { // prevent bug
 
 require_once plugin_dir_path(__FILE__) ."/service/Modelisme_Database_service.php";
 
-class Club_List extends WP_List_Table 
+class Members_List extends WP_List_Table 
 {
     private $dal;
 
@@ -34,8 +34,8 @@ class Club_List extends WP_List_Table
 
         // dados
         // $data = $this->dal->findAllAndAddress('clubs');
-        $data = $this->dal->findClubDomain();
-
+        $data = $this->dal->findMembers();
+        // echo '<pre>'; var_dump($data);
        $total_pages = count($data); 
 
         // tri 
@@ -57,33 +57,37 @@ class Club_List extends WP_List_Table
 
         switch($column_name) {
             case 'id':
+            case 'last_name':
+            case 'first_name':
+            case 'email':
+            case 'phone':
+            case 'club_number':
             case 'name':
-            case 'cat_domain':
                 return $item->$column_name;
-                break;
-            case 'participant':
-                return ($item->$column_name == 0) ? "Club in not participant" : "Club is participant";
                 break;
             default:
                 return print_r($item, true);
         }
     } 
 
-    public function usort_reorder($a, $b) { // compara os dois valores
-        // coluna sobre a qual vamos triar
-        $order_by = (!empty($_GET['orderby'])) ? $_GET['orderby'] : 'id'; // representa a variavel passada em get (propriedade a triar)
-        $order = (!empty($_GET['order'])) ? $_GET['order'] : 'asc'; // crescente ou descrescente
-        $result = strcmp($a->$order_by, $b->$order_by); // resultado de comparaçao feito dinamicamente (metodo dinamico) - sobre a coluna triavel ou sobre o id (retorna a ordem) 
+    // public function usort_reorder($a, $b) { // compara os dois valores
+    //     // coluna sobre a qual vamos triar
+    //     $order_by = (!empty($_GET['orderby'])) ? $_GET['orderby'] : 'id'; // representa a variavel passada em get (propriedade a triar)
+    //     $order = (!empty($_GET['order'])) ? $_GET['order'] : 'asc'; // crescente ou descrescente
+    //     $result = strcmp($a->$order_by, $b->$order_by); // resultado de comparaçao feito dinamicamente (metodo dinamico) - sobre a coluna triavel ou sobre o id (retorna a ordem) 
 
-        return ($order === 'asc') ? $result : -$result; // se a ordem é ascendente retorna result senao retorna o inverso de result (- é possivel porque strcmp() retorna um int)
-    }
+    //     return ($order === 'asc') ? $result : -$result; // se a ordem é ascendente retorna result senao retorna o inverso de result (- é possivel porque strcmp() retorna um int)
+    // }
 
     public function get_columns() { // predifinir todos os elementos das colunas e retornar o valor
         $columns = [
             'id' => 'id',
-            'name' => 'Name',
-            'cat_domain' => 'Domaine',
-            'participant' => 'Participant'
+            'last_name' => 'Last Name',
+            'first_name' => 'First Name',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'club_number' => 'Club Number',
+            'name' => 'Club Name',
         ];
 
         return $columns;
@@ -96,9 +100,7 @@ class Club_List extends WP_List_Table
     public function get_sortable_columns() {
         // triagem do que se afficha ou nao no backoffice (ex mostrar consoante o id ou o nome) - definir os campos que é possivel fazer triagem ou nao
         return $sortable = [ 'id' => ['id', true], 
-                            'name' => ['name', true],
-                            'domaine' => ['domaine', true],
-                            'participant' => ['participant', true]
+                            'last_name' => ['last_name', true],
         ];
     }
 }

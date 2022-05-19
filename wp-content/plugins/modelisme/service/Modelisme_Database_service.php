@@ -93,6 +93,7 @@ class Modelisme_Database_service
             'course_number' => 1,
             'category_id' => 2
        ] );
+       
         }
 
         // TABLE CLUBS
@@ -129,6 +130,15 @@ class Modelisme_Database_service
                 'participant' => 1,
                 'address_id' => 3
            ] );
+
+           $wpdb->insert( "{$wpdb->prefix}clubs", [
+            'name' => 'Les Catalans',
+            'email' => 'catalans@email.fr',
+            'phone' => '0752365412',
+            'domain' => 2,
+            'participant' => 0,
+            'address_id' => 2
+       ] );
         }
 
         // TABLE ADHERENTS
@@ -299,51 +309,119 @@ class Modelisme_Database_service
         return $result[0];
     }
 
-    // public function findAllAndAddress() {
-    //     global $wpdb;        
-    //     // var_dump($id);
-    //     $result = $wpdb->get_results("
-    //                                     SELECT {$wpdb->prefix}clubs.id, {$wpdb->prefix}clubs.name, {$wpdb->prefix}clubs.email, {$wpdb->prefix}clubs.phone, {$wpdb->prefix}clubs.domain, {$wpdb->prefix}clubs.participant, {$wpdb->prefix}clubs.address_id, {$wpdb->prefix}addresses.city, {$wpdb->prefix}addresses.street, {$wpdb->prefix}addresses.zip_code 
-    //                                     FROM {$wpdb->prefix}clubs 
-    //                                     JOIN {$wpdb->prefix}addresses 
-    //                                     ON {$wpdb->prefix}clubs.address_id = {$wpdb->prefix}addresses.id" 
-    //                                 );
+// FIND ONE MEMBER
+    public function findMember($id) {
+        global $wpdb;        
+        // var_dump($id);
+        $result = $wpdb->get_results(sprintf("SELECT {$wpdb->prefix}adherents.*, {$wpdb->prefix}clubs.name, {$wpdb->prefix}addresses.city, {$wpdb->prefix}addresses.street, {$wpdb->prefix}addresses.zip_code 
+                                            FROM {$wpdb->prefix}adherents 
+                                            JOIN {$wpdb->prefix}addresses 
+                                            ON {$wpdb->prefix}adherents.address_id = {$wpdb->prefix}addresses.id 
+                                            JOIN {$wpdb->prefix}clubs 
+                                            ON {$wpdb->prefix}adherents.club_id = {$wpdb->prefix}clubs.id 
+                                            WHERE {$wpdb->prefix}adherents.id = %s ;", $id));
     // var_dump($result);
-    //     return $result[0];
-    // }
+        return $result[0];
+    }
 
-    // method to save client
+// FIND ALL MEMBERS
+    public function findMembers() {
+        global $wpdb;        
+        // var_dump($id);
+        $result = $wpdb->get_results("SELECT {$wpdb->prefix}adherents.*, {$wpdb->prefix}clubs.name, {$wpdb->prefix}addresses.city, {$wpdb->prefix}addresses.street, {$wpdb->prefix}addresses.zip_code 
+                                            FROM {$wpdb->prefix}adherents 
+                                            JOIN {$wpdb->prefix}addresses 
+                                            ON {$wpdb->prefix}adherents.address_id = {$wpdb->prefix}addresses.id 
+                                            JOIN {$wpdb->prefix}clubs 
+                                            ON {$wpdb->prefix}adherents.club_id = {$wpdb->prefix}clubs.id;");
+    // echo '<pre>'; var_dump($result);
+        return $result;
+    }
+
+// SAVE CLUB IN TABLE
         public function save_club() {
             global $wpdb;
+
+            $address_id = $this->save_address();
+
+            // var_dump($address_id);
 
             //  recover data from method post 
             $values = [
                 'name' => $_POST['name'],
                 'email' => $_POST['email'],
                 'phone' => $_POST['phone'],
-                'street' => $_POST['street'],
-                'city' => $_POST['city'],
-                'zip_code' => $_POST['zip_code'],
-                'domain' => $_POST['domain'],
-                'participant' => filter_var($_POST['participant'], FILTER_VALIDATE_BOOLEAN),
+                'domain' => intval($_POST['domain']),
+                'participant' => filter_var(intval($_POST['participant']), FILTER_VALIDATE_BOOLEAN),
+                'address_id' => intval($address_id)
             ];
 
-            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}clubs WHERE email='" . $values['email'].";"); // query para saber se o email ja existe
+            var_dump($values);
+            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}clubs WHERE email=" . $values['email'].";");
     
             if(is_null($row)) {
                 $wpdb->insert("{$wpdb->prefix}clubs", $values);
             }
         }
     
-        // delete clients from DB
-        public function delete_club( $ids ) {
+//SAVE ADDRESS IN TABLE
+        public function save_address() {
             global $wpdb;
     
-            //
-            if(!is_array($ids)) { // if the parameter is not an array
+            $values = [
+                'street' => $_POST['street'],
+                'city' => $_POST['city'],
+                'zip_code' => $_POST['zip_code'],
+            ];
+
+            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}addresses WHERE street=" . $values['street']. " city=" . $values['street']. " zip-code=". $values['zip_code'].";");
+    
+            if(empty($row)) {
+                $wpdb->insert("{$wpdb->prefix}addresses", $values);
+                return $wpdb->insert_id;
+            }
+            var_dump($row);
+            return $row->id;
+        }
+
+// DELETE ROW FROM TABLE
+        public function delete_row($table, $ids) {
+            global $wpdb;
+
+            if(!is_array($ids)) {
                 $ids = array($ids);
             }
     
-            $wpdb->query("DELETE FROM {$wpdb->prefix}clubs" . "WHERE id IN (" . implode(',', $ids) . ")");
+            $wpdb->query(
+                            "DELETE FROM {$wpdb->prefix}$table " .
+                            "WHERE id IN ( " . implode(',', $ids) . 
+                        ")");
         }
-}
+
+// SAVE NEW MEMBER
+        public function save_member() {
+            global $wpdb;
+
+            $address_id = $this->save_address();
+
+            // var_dump($address_id);
+
+            //  recover data from method post 
+            $values = [
+                'last_name' => $_POST['last_name'],
+                'first_name' => $_POST['first_name'],
+                'email' => $_POST['email'],
+                'phone' => $_POST['phone'],
+                'club_number' => $_POST['club_number'],
+                'address_id' => intval($address_id),
+                'club_id' => $_POST['name'],
+            ];
+
+            var_dump($values);
+            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}adherents WHERE email=" . $values['email'].";");
+    
+            if(is_null($row)) {
+                $wpdb->insert("{$wpdb->prefix}adherents", $values);
+            }
+        }
+    }
