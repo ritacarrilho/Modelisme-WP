@@ -30,6 +30,9 @@ function occitanie_theme_script() // add style files
     // wp_register_style('boot', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', [], true); 
     // wp_enqueue_style('boot'); 
 
+    wp_register_style('reset', get_template_directory_uri() . '/reset.css', [], true);
+    wp_enqueue_style('reset'); 
+
     wp_register_style('main_style', get_template_directory_uri() . '/style.css', [], true);
     wp_enqueue_style('main_style'); 
 
@@ -50,4 +53,26 @@ function register_menu() // instanciar uma referencia do menu
     );
 }
 
+
 add_action('init', 'register_menu'); // (referencia do hook, a funçao a executar) quando a execuçao atinge os hooks, executa as funçoes definidas pelo developer
+
+class modelisme_walker extends Walker_Nav_Menu
+{
+    public function start_el(&$output, $data_object, $depth = 0,
+                             $args = null, $current_object_id = 0)
+    {
+        $menu_item = $data_object;
+
+        $title = $menu_item->title;
+        $description = $menu_item->description;;
+        $permalink = $menu_item->url;
+
+        $output .= "<li class='nav-item list-unstyled'>";
+        $output .= "<a href='" . $permalink . "' class='nav-link text-light'>";
+
+        $output .= $title;
+        $output .="</a>";
+
+
+    }
+}

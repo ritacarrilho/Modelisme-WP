@@ -1,19 +1,19 @@
 <?php
-if(! class_exists('WP_List_Table')) { // prevent bug
+if(! class_exists('WP_List_Table')) { 
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 } 
 
 require_once plugin_dir_path(__FILE__) ."/service/Modelisme_Database_service.php";
 
-class Members_List extends WP_List_Table 
+class Categories_List extends WP_List_Table 
 {
     private $dal;
 
     public function __construct( $args = array())
     {
         parent::__construct( [
-            'singular' => __('Member'),
-            'plural' => __('Members')
+            'singular' => __('Competition'),
+            'plural' => __('Competitions')
         ]);
 
         $this->dal = new Modelisme_Database_service;
@@ -21,24 +21,26 @@ class Members_List extends WP_List_Table
 
     public function prepare_items()
     {
+        // variables to create the tables
         $columns = $this->get_columns();
 
         $hidden = $this->get_hidden_columns();
 
         $sortable = $this->get_sortable_columns();
 
-        // paginaçao
-        $per_page = $this->get_items_per_page('client_per_page', 20); 
+        // pagination
+        $per_page = $this->get_items_per_page('client_per_page', 10); 
         $current_page = $this->get_pagenum(); 
 
         // data
-        $data = $this->dal->findMembers();
-        // echo '<pre>'; var_dump($data);
-       $total_pages = count($data); 
+        $data = $this->dal->findAll('categories');
+        // var_dump($data);
+        $total_pages = count($data); 
 
         // tri 
-        usort($data, array(&$this, 'usort_reorder')); 
-        $data_pagination = array_slice($data, (($current_page - 1) * $per_page), $per_page); 
+        usort($data, array(&$this, 'usort_reorder'));
+                                   
+        $data_pagination = array_slice($data, (($current_page - 1) * $per_page), $per_page);
         $this->set_pagination_args([
             'total_items' => '$total_pages',
             'per_page' => '$per_page',
@@ -49,12 +51,9 @@ class Members_List extends WP_List_Table
     }
 
     public function column_default($item, $column_name) {
+        // var_dump($column_name);
         switch($column_name) {
             case 'id':
-            case 'last_name':
-            case 'first_name':
-            case 'email':
-            case 'phone':
             case 'name':
                 return $item->$column_name;
                 break;
@@ -63,26 +62,30 @@ class Members_List extends WP_List_Table
         }
     } 
 
-    public function get_columns() { 
+    public function usort_reorder($a, $b) { 
+        $order_by = (!empty($_GET['orderby'])) ? $_GET['orderby'] : 'id'; 
+        $order = (!empty($_GET['order'])) ? $_GET['order'] : 'asc'; 
+        $result = strcmp($a->$order_by, $b->$order_by); 
+
+        return ($order === 'asc') ? $result : -$result; 
+    }
+
+    public function get_columns() {
         $columns = [
             'id' => 'id',
-            'last_name' => 'Last Name',
-            'first_name' => 'First Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'name' => 'Club Name',
+            'name' => 'Category Name',
         ];
 
         return $columns;
     }
 
-    public function get_hidden_columns() {
+    public function get_hidden_columns() { 
         return []; 
     }
 
     public function get_sortable_columns() {
         return $sortable = [ 'id' => ['id', true], 
-                            'last_name' => ['last_name', true],
+                            'name' => ['name', true],
         ];
     }
 }

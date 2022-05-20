@@ -7,7 +7,7 @@ class Modelisme_Database_service
     {
         global $wpdb;
 
-        // TABLE CATEGORIES
+// TABLE CATEGORIES
         // database creation request execution
         $wpdb->query("CREATE TABLE IF NOT EXISTS " . 
                     "{$wpdb->prefix}categories ( " . 
@@ -31,7 +31,7 @@ class Modelisme_Database_service
             ] );
         }
 
-        // TABLE ADDRESSES
+// TABLE ADDRESSES
         $wpdb->query("CREATE TABLE IF NOT EXISTS " .   
                         "{$wpdb->prefix}addresses ( ". 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " .
@@ -64,12 +64,12 @@ class Modelisme_Database_service
        ] );
         }
 
-        // TABLE COMPETITIONS
+// TABLE COMPETITIONS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                             "{$wpdb->prefix}competitions ( " . 
                             "id INT AUTO_INCREMENT PRIMARY KEY, " . 
                             "name VARCHAR(255) NOT NULL, " .
-                            "course_number INT(10) NOT NULL, " . 
+                            "total_courses INT(10) NOT NULL, " . 
                             "category_id INT NOT NULL " . 
                             ");"
         );
@@ -80,23 +80,23 @@ class Modelisme_Database_service
         if ( $count_categories == 0 ) {
             $wpdb->insert( "{$wpdb->prefix}competitions", [
                  'name' => 'Course de modèles réduits automobiles à moteurs thermiques',
-                 'course_number' => 1,
+                 'total_courses' => 10,
                  'category_id' => 1
             ] );
             $wpdb->insert( "{$wpdb->prefix}competitions", [
                 'name' => 'Course de drones à 3 rotors',
-                'course_number' => 1,
+                'total_courses' => 15,
                 'category_id' => 2
            ] );
            $wpdb->insert( "{$wpdb->prefix}competitions", [
             'name' => 'Course de drones à 4 rotors',
-            'course_number' => 1,
+            'total_courses' => 15,
             'category_id' => 2
        ] );
        
         }
 
-        // TABLE CLUBS
+// TABLE CLUBS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}clubs ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
@@ -141,7 +141,7 @@ class Modelisme_Database_service
        ] );
         }
 
-        // TABLE ADHERENTS
+// TABLE ADHERENTS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}adherents ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
@@ -170,33 +170,24 @@ class Modelisme_Database_service
             ] );
         }
 
-        // TABLE POINTS
+// TABLE POINTS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}points ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
                         "point_value VARCHAR(255) NOT NULL, " .
+                        "place INT NOT NULL " .
                         "id_competition INT NOT NULL " .
                         ");"
         );
 
-        // $count_points= $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}points;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
-
-        // // insert the value if the table is empty
-        // if ( $count_points == 0 ) {
-        //     $wpdb->insert( "{$wpdb->prefix}points", [
-        //          'point_value' => 50,
-        //          'id_competition' => '1',
-        //     ] );
-        // }
-
-        // TABLE RANKS
+// TABLE RANKS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}ranks ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
                         "rank INT(10) NOT NULL, " .
                         "id_adherent INT NOT NULL, " .
                         "id_competition INT NOT NULL, " .
-                        "id_points INT NOT NULL " .
+                        "points INT NOT NULL " .
                         ");"
         );
 
@@ -212,7 +203,7 @@ class Modelisme_Database_service
         //     ] );
         // }
 
-        // create foreign keys
+// create foreign keys
         $wpdb->query("ALTER TABLE {$wpdb->prefix}clubs " . 
                         "ADD CONSTRAINT fk_club_address " .
                         "FOREIGN KEY (address_id) " .
@@ -252,11 +243,6 @@ class Modelisme_Database_service
                         "ADD CONSTRAINT fk_competition_rank " .
                         "FOREIGN KEY (id_competition) " .
                         "REFERENCES {$wpdb->prefix}competitions(id);");
-
-        $wpdb->query("ALTER TABLE {$wpdb->prefix}ranks " . 
-                        "ADD CONSTRAINT fk_rank_points " .
-                        "FOREIGN KEY (id_points) " .
-                        "REFERENCES {$wpdb->prefix}points(id);");
     }
 
     public static function empty_db() {
@@ -285,14 +271,14 @@ class Modelisme_Database_service
         $wpdb->query("DROP TABLE {$wpdb->prefix}ranks;");
         $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");
     }
-
+// FIND ADD FROM A TABLE
     public function findAll($table) {
         global $wpdb;
         $result = $wpdb->get_results(sprintf("SELECT * FROM {$wpdb->prefix}%s;", $table));
 
         return $result;
     }
-
+// FIND DOMAIN OF EACH CLUB
     public function findClubDomain() {
         global $wpdb;
         $result = $wpdb->get_results("SELECT {$wpdb->prefix}clubs.*, {$wpdb->prefix}categories.name AS cat_domain FROM {$wpdb->prefix}clubs JOIN {$wpdb->prefix}categories ON {$wpdb->prefix}clubs.domain = {$wpdb->prefix}categories.id;");
@@ -300,7 +286,8 @@ class Modelisme_Database_service
         // echo '<pre>'; var_dump($result); echo '</pre>';
         return $result;
     }
-
+    
+// FIND ADDRESS
     public function findAddressPerClub($id) {
         global $wpdb;        
         // var_dump($id);
@@ -338,90 +325,133 @@ class Modelisme_Database_service
         return $result;
     }
 
+// FIND ALL COMPETITIONS
+    public function findCompetitions() {
+        global $wpdb;        
+        // var_dump($id);
+        $result = $wpdb->get_results("SELECT {$wpdb->prefix}competitions.*, {$wpdb->prefix}categories.id as category_id, {$wpdb->prefix}categories.name as category_name 
+                                            FROM {$wpdb->prefix}competitions 
+                                            JOIN {$wpdb->prefix}categories 
+                                            ON {$wpdb->prefix}competitions.category_id = {$wpdb->prefix}categories.id 
+                                    ;");
+
+    // echo '<pre>'; var_dump($result); echo '</pre>';
+        return $result;
+    }
+
 // SAVE CLUB IN TABLE
-        public function save_club() {
-            global $wpdb;
+    public function save_club() {
+        global $wpdb;
 
-            $address_id = $this->save_address();
+        $address_id = $this->save_address();
 
-            // var_dump($address_id);
+    //  recover data from method post 
+        $values = [
+            'name' => $_POST['name'],
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone'],
+            'domain' => intval($_POST['domain']),
+            'participant' => filter_var(intval($_POST['participant']), FILTER_VALIDATE_BOOLEAN),
+            'address_id' => intval($address_id)
+        ];
 
-            //  recover data from method post 
-            $values = [
-                'name' => $_POST['name'],
-                'email' => $_POST['email'],
-                'phone' => $_POST['phone'],
-                'domain' => intval($_POST['domain']),
-                'participant' => filter_var(intval($_POST['participant']), FILTER_VALIDATE_BOOLEAN),
-                'address_id' => intval($address_id)
-            ];
-
-            var_dump($values);
-            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}clubs WHERE email=" . $values['email'].";");
+        // var_dump($values);
+        $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}clubs WHERE email=" . $values['email'].";");
     
-            if(is_null($row)) {
-                $wpdb->insert("{$wpdb->prefix}clubs", $values);
-            }
-        }
-    
-//SAVE ADDRESS IN TABLE
-        public function save_address() {
-            global $wpdb;
-    
-            $values = [
-                'street' => $_POST['street'],
-                'city' => $_POST['city'],
-                'zip_code' => $_POST['zip_code'],
-            ];
-
-            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}addresses WHERE street=" . $values['street']. " city=" . $values['street']. " zip-code=". $values['zip_code'].";");
-    
-            if(empty($row)) {
-                $wpdb->insert("{$wpdb->prefix}addresses", $values);
-                return $wpdb->insert_id;
-            }
-            var_dump($row);
-            return $row->id;
-        }
-
-// DELETE ROW FROM TABLE
-        public function delete_row($table, $ids) {
-            global $wpdb;
-
-            if(!is_array($ids)) {
-                $ids = array($ids);
-            }
-    
-            $wpdb->query(
-                            "DELETE FROM {$wpdb->prefix}$table " .
-                            "WHERE id IN ( " . implode(',', $ids) . 
-                        ")");
-        }
-
-// SAVE NEW MEMBER
-        public function save_member() {
-            global $wpdb;
-
-            $address_id = $this->save_address();
-
-            // var_dump($address_id);
-
-            //  recover data from method post 
-            $values = [
-                'last_name' => $_POST['last_name'],
-                'first_name' => $_POST['first_name'],
-                'email' => $_POST['email'],
-                'phone' => $_POST['phone'],
-                'club_number' => $_POST['club_number'],
-                'address_id' => intval($address_id),
-                'club_id' => $_POST['name'],
-            ];
-
-            var_dump($values);
-            $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}adherents WHERE email=" . $values['email'].";");
-    
-            if(is_null($row)) {
-                $wpdb->insert("{$wpdb->prefix}adherents", $values);
-            }
+        if(is_null($row)) {
+            $wpdb->insert("{$wpdb->prefix}clubs", $values);
         }
     }
+    
+//SAVE ADDRESS IN TABLE
+    public function save_address() {
+        global $wpdb;
+    
+        $values = [
+            'street' => $_POST['street'],
+            'city' => $_POST['city'],
+            'zip_code' => $_POST['zip_code'],
+        ];
+
+        $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}addresses WHERE street=" . $values['street']. " city=" . $values['street']. " zip-code=". $values['zip_code'].";");
+    
+        if(empty($row)) {
+            $wpdb->insert("{$wpdb->prefix}addresses", $values);
+            return $wpdb->insert_id;
+        }
+            // var_dump($row);
+        return $row->id;
+    }
+
+// DELETE ROW FROM TABLE
+    public function delete_row($table, $ids) {
+        global $wpdb;
+
+        if(!is_array($ids)) {
+            $ids = array($ids);
+        }
+    
+        $wpdb->query("DELETE FROM {$wpdb->prefix}$table " .
+                    "WHERE id IN ( " . implode(',', $ids) . 
+                    ")");
+    }
+
+// SAVE NEW MEMBER
+    public function save_member() {
+        global $wpdb;
+
+        $address_id = $this->save_address();
+
+        //  recover data from method post 
+        $values = [
+            'last_name' => $_POST['last_name'],
+            'first_name' => $_POST['first_name'],
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone'],
+            'club_number' => $_POST['club_number'],
+            'address_id' => intval($address_id),
+            'club_id' => $_POST['name'],
+        ];
+
+        // var_dump($values);
+        $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}adherents WHERE email=" . $values['email'].";");
+    
+        if(is_null($row)) {
+            $wpdb->insert("{$wpdb->prefix}adherents", $values);
+        }
+    }
+   
+// SAVE CATEGORY 
+    public function save_category() {
+        global $wpdb;
+
+        $values = [
+            'name' => $_POST['name'],
+        ];
+
+        // var_dump($values);
+        $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories WHERE name=" . $values['name'].";");
+
+        if(is_null($row)) {
+            $wpdb->insert("{$wpdb->prefix}categories", $values);
+        }
+    }
+
+// SAVE COMPETITION
+    public function save_competition() {
+        global $wpdb;
+
+        //  recover data from method post 
+        $values = [
+            'name' => $_POST['competition_name'],
+            'total_courses' => $_POST['total_courses'],
+            'category_id' => $_POST['category_id'],
+        ];
+
+        // $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories WHERE category_name=" . $values['category_name'] . ";");
+
+        // if(is_null($row)) {
+            $wpdb->insert("{$wpdb->prefix}competitions", $values);
+        // }
+    }
+}
