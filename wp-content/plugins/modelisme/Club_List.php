@@ -28,7 +28,7 @@ class Club_List extends WP_List_Table
         $sortable = $this->get_sortable_columns();
 
         // pagination
-        $per_page = $this->get_items_per_page('client_per_page', 20); 
+        $per_page = $this->get_items_per_page('client_per_page', 10); 
         $current_page = $this->get_pagenum();
 
         // $data = $this->dal->findAllAndAddress('clubs');
@@ -40,8 +40,8 @@ class Club_List extends WP_List_Table
         usort($data, array(&$this, 'usort_reorder')); 
         $data_pagination = array_slice($data, (($current_page - 1) * $per_page), $per_page); 
         $this->set_pagination_args([
-            'total_items' => '$total_pages',
-            'per_page' => '$per_page',
+            'total_items' => $total_pages,
+            'per_page' => $per_page,
         ]);
 
         $this->_column_headers = [$columns, $hidden, $sortable];

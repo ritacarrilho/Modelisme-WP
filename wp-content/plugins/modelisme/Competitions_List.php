@@ -42,8 +42,8 @@ class Competitions_List extends WP_List_Table
         $data_pagination = array_slice($data, (($current_page - 1) * $per_page), $per_page); 
 
         $this->set_pagination_args([
-            'total_items' => '$total_pages',
-            'per_page' => '$per_page',
+            'total_items' => $total_pages,
+            'per_page' => $per_page,
         ]);
 
         $this->_column_headers = [$columns, $hidden, $sortable];
