@@ -83,16 +83,18 @@ class Modelisme_Database_service
                  'total_courses' => 10,
                  'category_id' => 1
             ] );
+            
             $wpdb->insert( "{$wpdb->prefix}competitions", [
                 'name' => 'Course de drones à 3 rotors',
                 'total_courses' => 15,
                 'category_id' => 2
            ] );
+
            $wpdb->insert( "{$wpdb->prefix}competitions", [
             'name' => 'Course de drones à 4 rotors',
             'total_courses' => 15,
             'category_id' => 2
-       ] );
+            ] );
        
         }
 
@@ -174,8 +176,8 @@ class Modelisme_Database_service
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}points ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
-                        "point_value VARCHAR(255) NOT NULL, " .
-                        "place INT NOT NULL " .
+                        "point_value INT(10) NOT NULL, " .
+                        "place INT NOT NULL, " .
                         "id_competition INT NOT NULL " .
                         ");"
         );
@@ -190,18 +192,6 @@ class Modelisme_Database_service
                         "points INT NOT NULL " .
                         ");"
         );
-
-        // $count_rank= $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}ranks;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
-
-        // // insert the value if the table is empty
-        // if ( $count_rank == 0 ) {
-        //     $wpdb->insert( "{$wpdb->prefix}ranks", [
-        //         'rank' => 50,
-        //         'id_adherent' => 1,
-        //         'id_competition' => 1,
-        //         'id_points' => 1,
-        //     ] );
-        // }
 
 // create foreign keys
         $wpdb->query("ALTER TABLE {$wpdb->prefix}clubs " . 

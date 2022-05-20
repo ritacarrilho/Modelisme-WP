@@ -19,9 +19,9 @@ class Modelisme
         // plugin activation: tables creation
         register_activation_hook(__FILE__, array('Modelisme_Database_service', 'create_db'));  //catches the plugin activation (class name, method of table creation)
 
-		register_deactivation_hook(__FILE__, array('Ern_Database_service', 'empty_db'));
+		// register_deactivation_hook(__FILE__, array('Modelisme_Database_service', 'empty_db'));
 
-		register_uninstall_hook(__File__, array('Ern_Database_service', 'drop_db'));
+		// register_uninstall_hook(__File__, array('Modelisme_Database_service', 'drop_db'));
 
         add_action('admin_menu', [$this, 'add_menu_modelisme']); // add the client menu to the wp interface
     }
@@ -137,7 +137,7 @@ class Modelisme
 
         if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
             $db->save_competition();
-            echo '<pre>'; var_dump($_POST);
+            // echo '<pre>'; var_dump($_POST);
         }
 
         if(isset($_POST['action']) && $_POST['action'] == 'del') { 
@@ -153,7 +153,7 @@ class Modelisme
         <form method="post">
             <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action" />
             <input type="submit" value="Add Competition" class="btn btn-outline-secondary" name="action"/>
-            <input type="submit" value="Add Course" class="btn btn-outline-secondary" name="action"/>
+            <!-- <input type="submit" value="Add Course" class="btn btn-outline-secondary" name="action"/> -->
         </form> 
 
         <?php }
@@ -491,6 +491,7 @@ class Modelisme
     public function modelisme_scores() {
         echo "<h2>" . get_admin_page_title() . "</h2>";
 
+        echo '<p>In development...</p>';
     }
 }
 
