@@ -1,14 +1,14 @@
 <?php
 
 function occitanie_setup() {
-    global $content_width; // nao declara a variavel mas sim vai buscar a referencia
+    global $content_width; // doesn't declare the variable, get it's the reference
     if(!isset($content_width)) {
         $content_width = 1250;
     }
 
-    add_theme_support('automatic-feed-links'); // the theme supports the feature => allows the links RSS dans les posts et comments
+    add_theme_support('automatic-feed-links'); // the theme supports the feature => allows the links RSS into posts and comments
 
-    add_theme_support('post-thumbnail'); // adicionar miniaturas nos articulos
+    add_theme_support('post-thumbnail'); // add icons to articles
 
     $args = [
         'default-image' => get_template_directory_uri() . '/img/default-imgage.jpg',
@@ -43,9 +43,9 @@ function occitanie_theme_script() // add style files
 add_action('wp_enqueue_scripts', 'occitanie_theme_script');
 
 
-function register_menu() // instanciar uma referencia do menu
+function register_menu() // instanciate a menu reference
 {
-    // faz com que haja um submenu na interface do wp-admin
+    // add sub-menu in backoffice 
     register_nav_menus(
         array(
             'menu-sup' => __('Menu sup') // 'menu-sup' -> slug | 'Menu sup' -> menu title
@@ -54,7 +54,7 @@ function register_menu() // instanciar uma referencia do menu
 }
 
 
-add_action('init', 'register_menu'); // (referencia do hook, a funçao a executar) quando a execuçao atinge os hooks, executa as funçoes definidas pelo developer
+add_action('init', 'register_menu'); // (hook reference, function to execute) when execution reaches the hooks, executes the defined functions
 
 class modelisme_walker extends Walker_Nav_Menu
 {
@@ -72,7 +72,5 @@ class modelisme_walker extends Walker_Nav_Menu
 
         $output .= $title;
         $output .="</a>";
-
-
     }
 }

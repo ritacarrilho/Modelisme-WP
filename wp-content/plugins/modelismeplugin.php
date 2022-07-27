@@ -32,7 +32,7 @@ class Modelisme
             "Modelisme", 
             "manage_options", 
             "occitanieModelisme", 
-            array($this, 'modelisme_competition'), 
+            array($this, 'modelisme_home'), 
             "dashicons-car", 
             40
         );
@@ -57,7 +57,7 @@ class Modelisme
 
          add_submenu_page(
             'occitanieModelisme',
-            'Modelisme Competitions', 
+            'Modelisme Categories', 
             'Categories', 
             'manage_options', 
             'allCategories', 
@@ -66,7 +66,7 @@ class Modelisme
 
          add_submenu_page(
             'occitanieModelisme',
-            'Modelisme Categories', 
+            'Modelisme Competitions', 
             'Competitions', 
             'manage_options', 
             'allCompetitions', 
@@ -83,6 +83,63 @@ class Modelisme
          ); 
     }
 
+
+
+// MODELISME 
+    public function modelisme_home() {
+        echo "<h1>" . get_admin_page_title() . "</h1>"; ?>
+
+        <h3>Welcome to the Modelisme Back Office.</h3>
+        <p>Here you can find all info about Occitanie's Interdepartemental Modelisme.</p>
+
+        <table class="wp-list-table widefat fixed striped table-view-list members">
+            <thead>
+                <tr>
+                    <th scope="col" id="label" class="manage-column column-id column-primary sortable asc">
+                        <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=label&amp;order=desc">
+                            <span>Menu Label</span>
+                            <span class="sorting-indicator"></span>
+                        </a>
+                    </th>
+
+                    <th scope="col" id="description" class="manage-column column-name sortable asc">
+                        <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=description&amp;order=desc">
+                            <span>Description</span>
+                            <span class="sorting-indicator"></span>
+                        </a>
+                    </th>	
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="id column-id has-row-actions column-primary" data-colname="label">Clubs</td>
+                    <td class="name column-name" data-colname="Category Name">Add, change and delete clubs</td>
+                </tr>
+                
+                <tr>
+                    <td class="id column-id has-row-actions column-primary" data-colname="label">Members</td>
+                    <td class="name column-name" data-colname="Category Name">Add, change and delete members of each club</td>
+                </tr>
+
+                <tr>
+                    <td class="id column-id has-row-actions column-primary" data-colname="label">Categories</td>
+                    <td class="name column-name" data-colname="Category Name">Add, change and delete categories</td>
+                </tr>
+
+                <tr>
+                    <td class="id column-id has-row-actions column-primary" data-colname="label">Competitions</td>
+                    <td class="name column-name" data-colname="Category Name">Add, change and delete competitions</td>
+                </tr>
+
+                <tr>
+                    <td class="id column-id has-row-actions column-primary" data-colname="label">Scores</td>
+                    <td class="name column-name" data-colname="Category Name">Add, change and delete scores</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <?php
+    }
 
 // CATEGORIES
     public function modelisme_categories() {
@@ -107,9 +164,40 @@ class Modelisme
         ?>
         <form method="post">
             <input type="submit" value="Add Category" class="btn btn-outline-secondary" name="action"/>
+            <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action"/>
         </form> 
 
         <?php }
+                elseif ($_REQUEST['page'] == 'allCategories' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
+                    <table class="table-striped ">
+                        <thead>
+                            <tr>
+                                <th scope="col"><strong>ID</strong><th>
+                                <th scope="col"><strong>Category Name</strong><th>
+                            </tr>
+                            </thead>
+                            
+                            <?php 
+
+                            foreach($db->findAll('categories') as $categories) { // afficher lista de todos os clients presentes na tabela com botao de delete
+                            ?>
+                            <tr>
+                                <td><?= $categories->id ?> <td>
+                                <td><?= $categories->name ?> <td>
+                                <td>
+                                    <form method="post">
+                                        <input type="hidden" name="action" value="del" /> 
+                                        <input type="hidden" name="id" value=" <?= $categories->id ?>" />
+                                        <input type="submit" value="del"/>
+                                    </form></td>
+                                </tr> 
+                        <?php } ?>
+                            </table>
+            
+                            <form method="post">
+                                <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                            </form>    
+                    <?php } 
             //  SHOW FORMULARY TO ADD A NEW CATEGORY
             elseif($_REQUEST['page'] == 'allCategories' && $_POST['action'] == 'Add Category')  { ?>
                 <h3>Add new Category</h3> 
@@ -127,7 +215,6 @@ class Modelisme
     <?php
             }  
     }
-
 
 // COMPETITIONS 
     public function modelisme_competition() {
