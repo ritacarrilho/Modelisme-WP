@@ -20,7 +20,7 @@ class Modelisme
         // plugin activation: tables creation
         register_activation_hook(__FILE__, array('Modelisme_Database_service', 'create_db'));  //catches the plugin activation (class name, method of table creation)
 
-		// register_deactivation_hook(__FILE__, array('Modelisme_Database_service', 'empty_db'));
+		register_deactivation_hook(__FILE__, array('Modelisme_Database_service', 'empty_db'));
 
 		// register_uninstall_hook(__File__, array('Modelisme_Database_service', 'drop_db'));
 
@@ -600,6 +600,7 @@ class Modelisme
         }
     }    
 
+// RANK / SCORES
     public function modelisme_scores() { ?>
         <div class="wrap">
             <h2><?php echo get_admin_page_title() ?></h2>
@@ -616,7 +617,7 @@ class Modelisme
             $db->delete_row('points', $_POST['id']);
         }
 
-        // SHOW POINTS SYSTEM INFO TABLE
+        // SHOW RANK SYSTEM INFO TABLE
         if($_REQUEST['page'] == 'scores' && $_POST['action'] == "") {
             $table = new Rank();
                 $table->prepare_items();
@@ -628,7 +629,7 @@ class Modelisme
             </form> 
         </div>
 
-            <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
+            <!--  SHOW ALL RANK TABLE AND COMPLETE INFO -->
             <?php }
             elseif ($_REQUEST['page'] == 'scores' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
             ?>
@@ -647,8 +648,8 @@ class Modelisme
                 ?>
                     <tr>
                         <td><?= $rank->id ?> <td>
-                        <td><?= $rank->id_club ?> <td>
-                        <td><?= $rank->id_competition ?> <td>
+                        <td><?= $rank->club_name ?> <td>
+                        <td><?= $rank->competition_name ?> <td>
                         <td><?= $rank->id_points ?> <td>
                         <td><?= $rank->course_nb ?> <td>
                         <td>
@@ -666,7 +667,7 @@ class Modelisme
                     <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </form>    
         <?php } 
-        //  SHOW FORMULARY TO ADD A NEW MEMBER 
+        //  SHOW FORMULARY TO ADD A NEW RANKS / SCORE 
             elseif($_REQUEST['page'] == 'scores' && $_POST['action'] == 'Add Score')  { ?>
                 <h3>Add new Rank</h3> 
 
@@ -701,8 +702,7 @@ class Modelisme
         }
     }
         
-    
-
+// POINTS SYSTEM
     public function modelisme_points() { ?>
         <div class="wrap">
             <h2><?php echo get_admin_page_title() ?></h2>
@@ -731,7 +731,7 @@ class Modelisme
             </form> 
         </div>
 
-            <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
+            <!--  SHOW ALL POINTS TABLE AND COMPLETE INFO -->
             <?php }
             elseif ($_REQUEST['page'] == 'points' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
             ?>
@@ -739,9 +739,9 @@ class Modelisme
                 <thead>
                     <tr>
                         <th scope="col"><strong>ID</strong><th>
+                        <th scope="col"><strong>Competition</strong><th>
                         <th scope="col"><strong>Score</strong><th>
                         <th scope="col"><strong>Ranks / Place</strong><th>
-                        <th scope="col"><strong>Competition</strong><th>
                     </tr>
                 </thead>
                 
@@ -750,9 +750,9 @@ class Modelisme
                 ?>
                     <tr>
                         <td><?= $score->id ?> <td>
-                        <td><?= $score->point_value ?> <td>
+                        <td><?= $score->competition ?> <td>
                         <td><?= $score->place ?> <td>
-                        <td><?= $score->id_competition ?> <td>
+                        <td><?= $score->point_value ?> <td>
                         <td>
                             <form method="post">
                                 <input type="hidden" name="action" value="del" /> 
@@ -768,7 +768,7 @@ class Modelisme
                     <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </form>    
         <?php } 
-        //  SHOW FORMULARY TO ADD A NEW MEMBER 
+        //  SHOW FORMULARY TO ADD A NEW RANK 
             elseif($_REQUEST['page'] == 'points' && $_POST['action'] == 'Add Point')  { ?>
                 <h3>Add new Point's system</h3> 
 

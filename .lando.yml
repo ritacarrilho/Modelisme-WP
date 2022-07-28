@@ -1,4 +1,4 @@
-name: occitanie-wp
+name: occitanie
 recipe: wordpress
 config:
   webroot: .

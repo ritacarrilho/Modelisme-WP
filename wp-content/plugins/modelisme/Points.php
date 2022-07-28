@@ -53,7 +53,7 @@ class Points extends WP_List_Table
             case 'id':
             case 'point_value':
             case 'place':
-            case 'id_competition':
+            case 'competition':
                 return $item->$column_name;
                 break;
             default:
@@ -63,10 +63,10 @@ class Points extends WP_List_Table
 
     public function get_columns() { 
         $columns = [
-            'id' => 'id',
+            'id' => 'Id',
+            'competition' => 'Competition',
+            'place' => 'Rank',
             'point_value' => 'Score',
-            'place' => 'Place',
-            'id_competition' => 'Competition',
         ];
 
         return $columns;

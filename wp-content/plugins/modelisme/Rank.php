@@ -51,8 +51,8 @@ class Rank extends WP_List_Table
     public function column_default($item, $column_name) {
         switch($column_name) {
             case 'id':
-            case 'id_club':
-            case 'id_competition':
+            case 'club_name':
+            case 'competition_name':
             case 'id_points':
             case 'course_nb':
                 return $item->$column_name;
@@ -65,10 +65,10 @@ class Rank extends WP_List_Table
     public function get_columns() { 
         $columns = [
             'id' => 'Id',
-            'id_club' => 'Club',
-            'id_competition' => 'Competition',
+            'club_name' => 'Club',
+            'competition_name' => 'Competition',
             'id_points' => 'Score',
-            'course_nb' => 'Course'
+            'course_nb' => 'Course Number'
         ];
 
         return $columns;
