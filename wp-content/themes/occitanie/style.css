@@ -1,16 +1,28 @@
 /*
-Theme Name: Theme ERN pour ERN
-Author: la team ERN
-Description: Template pour le site ern
+Theme Name: Theme Occitanie 
+Author: Rita
+Description: Template for modelisme club
 Version: 0.0.1
 Tags: bootstrap, html5, CSS3
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+/* Variables */
+:root {
+    --dark-grey: #524c51;
+    --white: #ffffff;
+}
+/* Reset classes */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     outline: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
 }
 
 a,
@@ -32,19 +44,40 @@ button {
     border: 0;
 }
 
-address {
-    font-style: normal;
-}
-
 html {
     margin-top: 0px !important;
 }
 
-#site-header {
-    margin-top: -35px;
+.menu {
+    position: fixed;
+    top: 0px;
 }
 
-#site-header img {
-    width: 100%;
-    height: auto;
+.admin-bar .menu {
+	top: 32px; /* on prend en compte le décalage */
+}
+
+.wrapper {
+    padding: 0 15vw;
+}
+/* FOOTER */
+.logo-banner {
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 50px 15vw;
+}
+
+    .logo-banner img {
+        height: 100px;
+        width: auto;
+    }
+
+.footer {
+    background-color: var(--dark-grey);
+    color: var(--white);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 50px 15vw;
+
 }
