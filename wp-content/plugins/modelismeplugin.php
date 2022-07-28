@@ -81,6 +81,15 @@ class Modelisme
             'addScore', 
             [$this, 'modelisme_scores']
          ); 
+
+         add_submenu_page(
+            'occitanieModelisme',
+            'Point\'s System', 
+            'Points', 
+            'manage_options', 
+            'addPoints', 
+            [$this, 'modelisme_points']
+         ); 
     }
 
 // MODELISME 
@@ -597,6 +606,108 @@ class Modelisme
         </div>
 
         <?php
+        
+    }
+
+    public function modelisme_points() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
+        <?php
+        
+        $db = new Modelisme_Database_service; 
+
+        if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
+            $db->save_points();
+            // echo '<pre>'; var_dump($_POST);
+        }
+
+        if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete point row from database
+            $db->delete_row('points', $_POST['id']);
+        }
+
+        // SHOW POINTS SYSTEM INFO TABLE
+        if($_REQUEST['page'] == 'allPoints' && $_POST['action'] == "") {
+            $table = new Points();
+                $table->prepare_items();
+                echo $table->display(); 
+        ?>
+            <form method="post">
+                <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
+                <input type="submit" value="Add Member" id="doaction" class="button action" name="action"/>
+            </form> 
+        </div>
+
+            <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
+            <?php }
+            elseif ($_REQUEST['page'] == 'allPoints' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
+            ?>
+                <table class="table-striped" style="padding-top: 15px;">
+                <thead>
+                    <tr>
+                        <th scope="col"><strong>ID</strong><th>
+                        <th scope="col"><strong>Score</strong><th>
+                        <th scope="col"><strong>Ranks / Place</strong><th>
+                        <th scope="col"><strong>Competition</strong><th>
+                    </tr>
+                </thead>
+                
+                
+            <?php foreach($db->findPoints() as $score) {
+                ?>
+                    <tr>
+                        <td><?= $score->id ?> <td>
+                        <td><?= $score->point_value ?> <td>
+                        <td><?= $score->place ?> <td>
+                        <td><?= $score->id_competition ?> <td>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="action" value="del" /> 
+                                <input type="hidden" name="id" value=" <?= $score->id ?>" />
+                                <input type="submit" id="doaction" class="button action" value="del"/>
+                            </form>
+                        </td>
+                    </tr> 
+            <?php } ?>
+                </table>
+
+                <form method="post" class="tablenav bottom">
+                    <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
+                </form>    
+        <?php } 
+        //  SHOW FORMULARY TO ADD A NEW MEMBER 
+            elseif($_REQUEST['page'] == 'allPoints' && $_POST['action'] == 'Add Score')  { ?>
+                <h3>Add new Club</h3> 
+
+                <form method="post">
+                    <input type="hidden" name="send" value="ok"/>
+                    <div>
+                        <label for="point_value"> Score : </label>
+                        <input type="text" id="name" name="last_name" class="widefat" required />
+                    </div>
+                    <div>
+                        <label for="place"> Place : </label>
+                        <input type="text" id="name" name="first_name" class="widefat" required />
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <select id="club" name="competition" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="domain" selected="true" disabled="disabled">Choose a Competition
+                    <?php
+                        foreach($db->findAll('competitions') as $competition) { ?>
+                            <option name="domain" value="<?= $competition->id ?>"> <?=$competition->name ?> </option>
+                    <?php } ?>
+                        </select>
+                    <div>
+                        <input type="submit" id="doaction" class="button action" value="Add"/>
+                    </div>
+                </form>
+
+                <form method="post" class="tablenav bottom">
+                        <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
+                </form> 
+            <?php        
+        }
+
         
     }
 }

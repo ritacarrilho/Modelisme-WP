@@ -5,15 +5,15 @@ if(! class_exists('WP_List_Table')) { // prevent bug
 
 require_once plugin_dir_path(__FILE__) ."/service/Modelisme_Database_service.php";
 
-class Members_List extends WP_List_Table 
+class Points extends WP_List_Table 
 {
     private $dal;
 
     public function __construct( $args = array())
     {
         parent::__construct( [
-            'singular' => __('Member'),
-            'plural' => __('Members')
+            'singular' => __('Point'),
+            'plural' => __('Points')
         ]);
 
         $this->dal = new Modelisme_Database_service;
@@ -32,7 +32,7 @@ class Members_List extends WP_List_Table
         $current_page = $this->get_pagenum(); 
 
         // data
-        $data = $this->dal->findMembers();
+        $data = $this->dal->findPoints();
         // echo '<pre>'; var_dump($data);
        $total_pages = count($data); 
 
@@ -66,11 +66,9 @@ class Members_List extends WP_List_Table
     public function get_columns() { 
         $columns = [
             'id' => 'id',
-            'last_name' => 'Last Name',
-            'first_name' => 'First Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'name' => 'Club Name',
+            'point_value' => 'Score',
+            'place' => 'Place',
+            'id_competition' => 'Competition',
         ];
 
         return $columns;
@@ -82,8 +80,8 @@ class Members_List extends WP_List_Table
 
     public function get_sortable_columns() {
         return $sortable = [ 'id' => ['id', true], 
-                            'last_name' => ['last_name', true],
-                            'name' => ['name', true],
+                            'point_value' => ['point_value', true],
+                            'place' => ['place', true],
         ];
     }
 }

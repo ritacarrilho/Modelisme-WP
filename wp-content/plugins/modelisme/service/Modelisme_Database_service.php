@@ -272,12 +272,11 @@ class Modelisme_Database_service
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}ranks ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
-                        "rank INT(10) NOT NULL, " .
-                        "id_adherent INT NOT NULL, " .
+                        "id_club INT NOT NULL, " .
                         "id_competition INT NOT NULL, " .
-                        "points INT NOT NULL " .
-                        ");"
-        );
+                        "id_points INT NOT NULL " .
+                        "course_nb INT NOT NULL " .
+                        ");");
 
 // create foreign keys
         $wpdb->query("ALTER TABLE {$wpdb->prefix}clubs " . 
@@ -312,15 +311,20 @@ class Modelisme_Database_service
                         
         $wpdb->query("ALTER TABLE {$wpdb->prefix}ranks " . 
                         "ADD CONSTRAINT fk_adherent_rank " .
-                        "FOREIGN KEY (id_adherent) " .
-                        "REFERENCES {$wpdb->prefix}adherents(id);");
+                        "FOREIGN KEY (id_club) " .
+                        "REFERENCES {$wpdb->prefix}clubs(id);");
+
+        $wpdb->query("ALTER TABLE {$wpdb->prefix}ranks " . 
+                        "ADD CONSTRAINT fk_adherent_rank " .
+                        "FOREIGN KEY (id_points) " .
+                        "REFERENCES {$wpdb->prefix}points(id);");
 
         $wpdb->query("ALTER TABLE {$wpdb->prefix}ranks " . 
                         "ADD CONSTRAINT fk_competition_rank " .
                         "FOREIGN KEY (id_competition) " .
                         "REFERENCES {$wpdb->prefix}competitions(id);");
     }
-
+// EMPTY DB
     public static function empty_db() {
         global $wpdb;
 
@@ -335,6 +339,7 @@ class Modelisme_Database_service
         $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");
     }
 
+// DROP DB
     public static function drop_db() {
         global $wpdb;
         $wpdb->query("SET FOREIGN_KEY_CHECKS = 0;");
@@ -415,6 +420,20 @@ class Modelisme_Database_service
     // echo '<pre>'; var_dump($result); echo '</pre>';
         return $result;
     }
+
+// FIND ALL Points
+public function findPoints() {
+    global $wpdb;        
+    // var_dump($id);
+    $result = $wpdb->get_results("SELECT {$wpdb->prefix}points.*, {$wpdb->prefix}competitions.* 
+                                        FROM {$wpdb->prefix}points 
+                                        JOIN {$wpdb->prefix}competitions
+                                        ON {$wpdb->prefix}points.id_competition = {$wpdb->prefix}competitions.id 
+                                ;");
+
+// echo '<pre>'; var_dump($result); echo '</pre>';
+    return $result;
+}
 
 // SAVE CLUB IN TABLE
     public function save_club() {
@@ -530,5 +549,34 @@ class Modelisme_Database_service
         // if(is_null($row)) {
             $wpdb->insert("{$wpdb->prefix}competitions", $values);
         // }
+    }
+
+// SAVE RANK
+    public function save_rank() {
+        global $wpdb;
+
+        //  recover data from method post 
+        $values = [
+            'id_club' => $_POST['id_club'],
+            'id_competition' => $_POST['id_competition'],
+            'id_points' => $_POST['id_points'],
+            'course_nb' => $_POST['course_nb'],
+        ];
+
+         $wpdb->insert("{$wpdb->prefix}ranks", $values);
+    }
+
+// SAVE POINTS 
+    public function save_points() {
+        global $wpdb;
+
+    //  recover data from method post 
+        $values = [
+            'point_value' => $_POST['point_value'],
+            'place' => $_POST['place'],
+            'id_competition' => $_POST['name'],
+        ];
+
+        $wpdb->insert("{$wpdb->prefix}points", $values);
     }
 }
