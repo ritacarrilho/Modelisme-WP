@@ -83,68 +83,69 @@ class Modelisme
          ); 
     }
 
-
-
 // MODELISME 
-    public function modelisme_home() {
-        echo "<h1>" . get_admin_page_title() . "</h1>"; ?>
+    public function modelisme_home() { ?>
+        <div class="wrap">
+            <h1><?php echo get_admin_page_title()?></h1>
 
-        <h3>Welcome to the Modelisme Back Office.</h3>
-        <p>Here you can find all info about Occitanie's Interdepartemental Modelisme.</p>
+            <h3>Welcome to the Modelisme Back Office.</h3>
+            <p>Here you can find all info about Occitanie's Interdepartemental Modelisme.</p>
 
-        <table class="wp-list-table widefat fixed striped table-view-list members">
-            <thead>
-                <tr>
-                    <th scope="col" id="label" class="manage-column column-id column-primary sortable asc">
-                        <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=label&amp;order=desc">
-                            <span>Menu Label</span>
-                            <span class="sorting-indicator"></span>
-                        </a>
-                    </th>
+            <table class="wp-list-table widefat fixed striped table-view-list pages">
+                <thead>
+                    <tr>
+                        <th scope="col" id="label" class="manage-column column-id column-primary sortable asc">
+                            <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=label&amp;order=desc">
+                                <span>Menu Label</span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
 
-                    <th scope="col" id="description" class="manage-column column-name sortable asc">
-                        <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=description&amp;order=desc">
-                            <span>Description</span>
-                            <span class="sorting-indicator"></span>
-                        </a>
-                    </th>	
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="id column-id has-row-actions column-primary" data-colname="label">Clubs</td>
-                    <td class="name column-name" data-colname="Category Name">Add, change and delete clubs</td>
-                </tr>
-                
-                <tr>
-                    <td class="id column-id has-row-actions column-primary" data-colname="label">Members</td>
-                    <td class="name column-name" data-colname="Category Name">Add, change and delete members of each club</td>
-                </tr>
+                        <th scope="col" id="description" class="manage-column column-name sortable asc">
+                            <a href="http://occitanie-wp.lndo.site/wp-admin/admin.php?page=occitanieModelisme&amp;orderby=description&amp;order=desc">
+                                <span>Description</span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>	
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="id column-id has-row-actions column-primary" data-colname="label">Clubs</td>
+                        <td class="name column-name" data-colname="Category Name">Add, change and delete clubs</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class="id column-id has-row-actions column-primary" data-colname="label">Members</td>
+                        <td class="name column-name" data-colname="Category Name">Add, change and delete members of each club</td>
+                    </tr>
 
-                <tr>
-                    <td class="id column-id has-row-actions column-primary" data-colname="label">Categories</td>
-                    <td class="name column-name" data-colname="Category Name">Add, change and delete categories</td>
-                </tr>
+                    <tr>
+                        <td class="id column-id has-row-actions column-primary" data-colname="label">Categories</td>
+                        <td class="name column-name" data-colname="Category Name">Add, change and delete categories</td>
+                    </tr>
 
-                <tr>
-                    <td class="id column-id has-row-actions column-primary" data-colname="label">Competitions</td>
-                    <td class="name column-name" data-colname="Category Name">Add, change and delete competitions</td>
-                </tr>
+                    <tr>
+                        <td class="id column-id has-row-actions column-primary" data-colname="label">Competitions</td>
+                        <td class="name column-name" data-colname="Category Name">Add, change and delete competitions</td>
+                    </tr>
 
-                <tr>
-                    <td class="id column-id has-row-actions column-primary" data-colname="label">Scores</td>
-                    <td class="name column-name" data-colname="Category Name">Add, change and delete scores</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <?php
+                    <tr>
+                        <td class="id column-id has-row-actions column-primary" data-colname="label">Scores</td>
+                        <td class="name column-name" data-colname="Category Name">Add, change and delete scores</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <?php
     }
 
 // CATEGORIES
-    public function modelisme_categories() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
+    public function modelisme_categories() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
 
+        <?php
         $db = new Modelisme_Database_service;
 
         if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
@@ -156,20 +157,21 @@ class Modelisme
             $db->delete_row('categories', $_POST['id']);
         }
 
-        // SHOW COMPETITIONS INFO TABLE
+        // SHOW CATEGORIES INFO TABLE
         if($_REQUEST['page'] == 'allCategories' && $_POST['action'] == "") {
             $table = new Categories_List;
                 $table->prepare_items();
                 echo $table->display(); 
         ?>
-        <form method="post">
-            <input type="submit" value="Add Category" class="btn btn-outline-secondary" name="action"/>
-            <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action"/>
-        </form> 
-
+        
+            <form method="post">
+                <input type="submit" value="Add Category" id="doaction" class="button action" name="action"/>
+                <input type="submit" value="View Details" id="doaction" class="button action" name="action"/>
+            </form> 
+        </div>
         <?php }
                 elseif ($_REQUEST['page'] == 'allCategories' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
-                    <table class="table-striped ">
+                    <table class="table-striped" style="padding-top: 20px;">
                         <thead>
                             <tr>
                                 <th scope="col"><strong>ID</strong><th>
@@ -179,7 +181,7 @@ class Modelisme
                             
                             <?php 
 
-                            foreach($db->findAll('categories') as $categories) { // afficher lista de todos os clients presentes na tabela com botao de delete
+                            foreach($db->findAll('categories') as $categories) { // show all categories list with delete button
                             ?>
                             <tr>
                                 <td><?= $categories->id ?> <td>
@@ -188,14 +190,15 @@ class Modelisme
                                     <form method="post">
                                         <input type="hidden" name="action" value="del" /> 
                                         <input type="hidden" name="id" value=" <?= $categories->id ?>" />
-                                        <input type="submit" value="del"/>
-                                    </form></td>
-                                </tr> 
+                                        <input type="submit" id="doaction" class="button action" value="del"/>
+                                    </form>
+                                </td>
+                            </tr> 
                         <?php } ?>
                             </table>
             
-                            <form method="post">
-                                <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                            <form method="post" style="padding-top: 20px;">
+                                <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                             </form>    
                     <?php } 
             //  SHOW FORMULARY TO ADD A NEW CATEGORY
@@ -203,23 +206,29 @@ class Modelisme
                 <h3>Add new Category</h3> 
 
                 <form method="post">
-                <input type="hidden" name="send" value="ok"/>
-                <div><label for="name"> Category Name : </label>
-                <input type="text" id="name" name="name" class="widefat" required /></div>
-                <div> <input type="submit" value="Add Category"/></div></form>
-            </form>
+                    <input type="hidden" name="send" value="ok"/>
+                    <div>
+                        <label for="name"> Category Name : </label>
+                        <input type="text" id="name" name="name" class="widefat" required />
+                    </div>
+                    <div class="tablenav bottom"> 
+                        <input type="submit" id="doaction" class="button action" value="Add Category"/>
+                    </div>
+                </form>
+            
 
-            <form method="post">
-                <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+            <form method="post" class="tablenav bottom">
+                <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
             </form> 
     <?php
             }  
     }
 
 // COMPETITIONS 
-    public function modelisme_competition() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
-
+    public function modelisme_competition() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
+        <?php
         $db = new Modelisme_Database_service;
 
         if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
@@ -237,15 +246,14 @@ class Modelisme
                 $table->prepare_items();
                 echo $table->display(); 
         ?>
-        <form method="post">
-            <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action" />
-            <input type="submit" value="Add Competition" class="btn btn-outline-secondary" name="action"/>
-            <!-- <input type="submit" value="Add Course" class="btn btn-outline-secondary" name="action"/> -->
-        </form> 
-
+            <form method="post">
+                <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
+                <input type="submit" value="Add Competition" id="doaction" class="button action" name="action"/>
+            </form> 
+        </div>
         <?php }
         elseif ($_REQUEST['page'] == 'allCompetitions' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
-            <table class="table-striped ">
+            <table class="table-striped" style="padding-top: 15px;">
                 <thead>
                     <tr>
                         <th scope="col"><strong>ID</strong><th>
@@ -257,7 +265,7 @@ class Modelisme
                     
                     <?php 
                     // echo '<pre>'; var_dump($_POST); echo '</pre>';
-                    foreach($db->findCompetitions() as $competition) { // afficher lista de todos os clients presentes na tabela com botao de delete
+                    foreach($db->findCompetitions() as $competition) { // show all competitions list with delete button
                     ?>
                     <tr>
                         <td><?= $competition->id ?> <td>
@@ -268,14 +276,14 @@ class Modelisme
                             <form method="post">
                                 <input type="hidden" name="action" value="del" /> 
                                 <input type="hidden" name="id" value=" <?= $competition->id ?>" />
-                                <input type="submit" value="del"/>
+                                <input type="submit" id="doaction" class="button action" value="del"/>
                             </form></td>
                         </tr> 
                 <?php } ?>
                     </table>
     
-                    <form method="post">
-                        <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                    <form method="post" class="tablenav bottom">
+                        <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                     </form>    
             <?php } 
         //  SHOW FORMULARY TO ADD A NEW COMPETITION 
@@ -284,11 +292,11 @@ class Modelisme
     
             <form method="post">
                 <input type="hidden" name="send" value="ok"/>
-                <div>
+                <div style="padding-bottom: 10px;">
                     <label for="competition_name"> Competition Name : </label>
                     <input type="text" id="competition_name" name="competition_name" class="widefat" required />
                 </div>
-                <div>
+                <div style="padding-bottom: 10px;">
                     <label for="total_courses"> Total Courses : </label>
                     <input type="text" id="total_courses" name="total_courses" class="widefat" required />
                 </div>
@@ -300,14 +308,14 @@ class Modelisme
             <?php } ?>
                     </select>
                 </div>
-                <div>
-                    <input type="submit" value="Add"/>
+                <div class="tablenav bottom">
+                    <input type="submit" id="doaction" class="button action" value="Add"/>
                 </div>
             </form>
 
             <form method="post">
-                <div>
-                    <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                <div class="tablenav bottom">
+                    <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </div>
             </form> 
         <?php
@@ -315,9 +323,11 @@ class Modelisme
     }
 
 // CLUBS 
-    public function modelisme_clubs() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
+    public function modelisme_clubs() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
 
+        <?php
         $db = new Modelisme_Database_service;
 
         if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
@@ -336,12 +346,13 @@ class Modelisme
                 echo $table->display(); 
         ?>
                 <form method="post">
-                        <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action" />
-                        <input type="submit" value="Add Club" class="btn btn-outline-secondary" name="action"/>
+                        <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
+                        <input type="submit" value="Add Club" id="doaction" class="button action" name="action"/>
                     </form> 
+            </div>
         <?php }
         elseif ($_REQUEST['page'] == 'allClubs' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {?>
-            <table class="table-striped ">
+            <table class="table-striped" style="padding-top: 15px;">
                 <thead>
                     <tr>
                         <th scope="col"><strong>ID</strong><th>
@@ -376,15 +387,15 @@ class Modelisme
                             <form method="post">
                                 <input type="hidden" name="action" value="del" /> 
                                 <input type="hidden" name="id" value=" <?= $club->id ?>" />
-                                <input type="submit" value="del"/>
+                                <input type="submit" id="doaction" class="button action" value="del"/>
                             </form>
                         </td>
                     </tr> 
             <?php } ?>
                 </table>
 
-                <form method="post">
-                    <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                <form method="post" class="tablenav bottom">
+                    <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW CLUB 
@@ -418,7 +429,8 @@ class Modelisme
                 <input type="text" id="zip-code" name="zip_code" class="widefat" required />
                 </div>
 
-                <select id="domain" name="domain">
+                <select id="domain" name="domain" style="margin-bottom: 10px; margin-top: 10px">
+                <option name="domain" selected="true" disabled="disabled">Choose a Category</option>
             <?php
                 foreach($db->findAll('categories') as $category) { 
                     // var_dump($category->name);
@@ -433,22 +445,23 @@ class Modelisme
                     <input type="radio" name="participant" class="widefat" value="1" /> Yes
                     <input type="radio" name="participant" class="widefat" value="0" /> No
                 </div>
-                <div>
-                    <input type="submit" value="Add"/>
+                <div class="tablenav bottom">
+                    <input type="submit" id="doaction" class="button action" value="Add"/>
                 </div>
             </form>
 
             <form method="post">
-                <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                <input type="submit" value="Go Back" id="doaction" class="button action"/>
             </form> 
     <?php }        
     }
 
 // MEMBERS
-    public function modelisme_members() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
+    public function modelisme_members() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
 
-
+        <?php
         $db = new Modelisme_Database_service; 
 
         if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
@@ -456,7 +469,7 @@ class Modelisme
             // echo '<pre>'; var_dump($_POST);
         }
 
-        if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete club from database
+        if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete member from database
             $db->delete_row('adherents', $_POST['id']);
         }
 
@@ -467,15 +480,16 @@ class Modelisme
                 echo $table->display(); 
         ?>
             <form method="post">
-                <input type="submit" value="View Details" class="btn btn-outline-secondary" name="action" />
-                <input type="submit" value="Add Member" class="btn btn-outline-secondary" name="action"/>
+                <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
+                <input type="submit" value="Add Member" id="doaction" class="button action" name="action"/>
             </form> 
+        </div>
 
             <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
             <?php }
             elseif ($_REQUEST['page'] == 'allMembers' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
             ?>
-                <table class="table-striped ">
+                <table class="table-striped" style="padding-top: 15px;">
                 <thead>
                     <tr>
                         <th scope="col"><strong>ID</strong><th>
@@ -505,15 +519,15 @@ class Modelisme
                             <form method="post">
                                 <input type="hidden" name="action" value="del" /> 
                                 <input type="hidden" name="id" value=" <?= $member->id ?>" />
-                                <input type="submit" value="del"/>
+                                <input type="submit" id="doaction" class="button action" value="del"/>
                             </form>
                         </td>
                     </tr> 
             <?php } ?>
                 </table>
 
-                <form method="post">
-                    <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                <form method="post" class="tablenav bottom">
+                    <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW MEMBER 
@@ -555,30 +569,35 @@ class Modelisme
                         <input type="text" id="zip-code" name="zip_code" class="widefat" required />
                     </div>
 
-                    <div>
-                        <label for="club_number"> Club Name : </label>
-                        <select id="club" name="name">
-                <?php
-                    foreach($db->findAll('clubs') as $club) { ?>
+                    <div style="padding-top: 10px;">
+                        <select id="club" name="name" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="domain" selected="true" disabled="disabled">Choose a Club
+                    <?php
+                        foreach($db->findAll('clubs') as $club) { ?>
                             <option name="domain" value="<?= $club->id ?>"> <?=$club->name ?> </option>
-                <?php } ?>
-                 
+                    <?php } ?>
+                        </select>
                     <div>
-                        <input type="submit" value="Add"/>
+                        <input type="submit" id="doaction" class="button action" value="Add"/>
                     </div>
                 </form>
 
-                <form method="post">
-                        <input type="submit" value="Go Back" class="btn btn-outline-secondary" name="" />
+                <form method="post" class="tablenav bottom">
+                        <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
                 </form> 
             <?php        
         }
     }    
 
-    public function modelisme_scores() {
-        echo "<h2>" . get_admin_page_title() . "</h2>";
+    public function modelisme_scores() { ?>
+        <div class="wrap">
+            <h2><?php echo get_admin_page_title() ?></h2>
 
-        echo '<p>In development...</p>';
+            <p>In development...</p>
+        </div>
+
+        <?php
+        
     }
 }
 

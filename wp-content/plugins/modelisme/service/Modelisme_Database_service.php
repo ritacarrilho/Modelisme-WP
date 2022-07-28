@@ -143,7 +143,7 @@ class Modelisme_Database_service
        ] );
         }
 
-// TABLE ADHERENTS
+// TABLE MEMBERS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
                         "{$wpdb->prefix}adherents ( " . 
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
@@ -181,6 +181,92 @@ class Modelisme_Database_service
                         "id_competition INT NOT NULL " .
                         ");"
         );
+
+        $count_points = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}points;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
+
+        // insert the value if the table is empty
+        if ( $count_points == 0 ) {
+        // course de modèles réduits automobiles à moteurs
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                 'point_value' => 8,
+                 'place' => 1,
+                 'id_competition' => 1,
+            ]);
+            
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 6,
+                'place' => 2,
+                'id_competition' => 1,
+           ]);            
+           
+           $wpdb->insert( "{$wpdb->prefix}points", [
+            'point_value' => 4,
+            'place' => 3,
+            'id_competition' => 1,
+            ]);           
+       
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 2,
+                'place' => 4,
+                'id_competition' => 1,
+            ]);            
+   
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 1,
+                'place' => 5,
+                'id_competition' => 1,
+            ]);
+
+        // course de drones à 3 rotors
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 50,
+                'place' => 1,
+                'id_competition' => 2,
+           ]);            
+           
+           $wpdb->insert( "{$wpdb->prefix}points", [
+            'point_value' => 25,
+            'place' => 2,
+            'id_competition' => 2,
+            ]);           
+       
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 10,
+                'place' => 3,
+                'id_competition' => 2,
+            ]);            
+   
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 1,
+                'place' => 4,
+                'id_competition' => 2,
+            ]);
+
+        // course de drones à 4 rotors
+             $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 50,
+                'place' => 1,
+                'id_competition' => 3,
+           ]);            
+           
+           $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 25,
+                'place' => 2,
+                'id_competition' => 3,
+            ]);           
+       
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 10,
+                'place' => 3,
+                'id_competition' => 3,
+            ]);            
+   
+            $wpdb->insert( "{$wpdb->prefix}points", [
+                'point_value' => 1,
+                'place' => 4,
+                'id_competition' => 3,
+            ]);
+        }
 
 // TABLE RANKS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
@@ -261,7 +347,8 @@ class Modelisme_Database_service
         $wpdb->query("DROP TABLE {$wpdb->prefix}ranks;");
         $wpdb->query("SET FOREIGN_KEY_CHECKS = 1;");
     }
-// FIND ADD FROM A TABLE
+
+// FIND ALL FROM A TABLE
     public function findAll($table) {
         global $wpdb;
         $result = $wpdb->get_results(sprintf("SELECT * FROM {$wpdb->prefix}%s;", $table));
