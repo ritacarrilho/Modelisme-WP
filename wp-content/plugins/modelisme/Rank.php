@@ -5,15 +5,15 @@ if(! class_exists('WP_List_Table')) { // prevent bug
 
 require_once plugin_dir_path(__FILE__) ."/service/Modelisme_Database_service.php";
 
-class Points extends WP_List_Table 
+class Rank extends WP_List_Table 
 {
     private $dal;
 
     public function __construct( $args = array())
     {
         parent::__construct( [
-            'singular' => __('Point'),
-            'plural' => __('Points')
+            'singular' => __('Rank'),
+            'plural' => __('Ranks')
         ]);
 
         $this->dal = new Modelisme_Database_service;
@@ -32,7 +32,7 @@ class Points extends WP_List_Table
         $current_page = $this->get_pagenum(); 
 
         // data
-        $data = $this->dal->findPoints();
+        $data = $this->dal->findRank();
         // echo '<pre>'; var_dump($data);
        $total_pages = count($data); 
 
@@ -51,9 +51,10 @@ class Points extends WP_List_Table
     public function column_default($item, $column_name) {
         switch($column_name) {
             case 'id':
-            case 'point_value':
-            case 'place':
+            case 'id_club':
             case 'id_competition':
+            case 'id_points':
+            case 'course_nb':
                 return $item->$column_name;
                 break;
             default:
@@ -63,10 +64,11 @@ class Points extends WP_List_Table
 
     public function get_columns() { 
         $columns = [
-            'id' => 'id',
-            'point_value' => 'Score',
-            'place' => 'Place',
+            'id' => 'Id',
+            'id_club' => 'Club',
             'id_competition' => 'Competition',
+            'id_points' => 'Score',
+            'course_nb' => 'Course'
         ];
 
         return $columns;
@@ -78,8 +80,8 @@ class Points extends WP_List_Table
 
     public function get_sortable_columns() {
         return $sortable = [ 'id' => ['id', true], 
-                            'point_value' => ['point_value', true],
-                            'place' => ['place', true],
+                            'id_points' => ['id_points', true],
+                            'course_nb' => ['course_nb', true],
         ];
     }
 }

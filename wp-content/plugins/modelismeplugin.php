@@ -11,7 +11,8 @@ require_once plugin_dir_path(__FILE__) . 'modelisme/Club_List.php';
 require_once plugin_dir_path(__FILE__) . 'modelisme/Members_List.php';
 require_once plugin_dir_path(__FILE__) . 'modelisme/Competitions_List.php';
 require_once plugin_dir_path(__FILE__) . 'modelisme/Categories_List.php';
-
+require_once plugin_dir_path(__FILE__) . 'modelisme/Points.php';
+require_once plugin_dir_path(__FILE__) . 'modelisme/Rank.php';
 
 class Modelisme 
 {
@@ -42,7 +43,7 @@ class Modelisme
            'All Modelisme Clubs', 
            'Clubs', 
            'manage_options', 
-           'allClubs', 
+           'clubs', 
            [$this, 'modelisme_clubs']
         ); 
 
@@ -51,7 +52,7 @@ class Modelisme
             'The Club\'s Members', 
             'Members', 
             'manage_options', 
-            'allMembers', 
+            'members', 
             [$this, 'modelisme_members']
          ); 
 
@@ -60,7 +61,7 @@ class Modelisme
             'Modelisme Categories', 
             'Categories', 
             'manage_options', 
-            'allCategories', 
+            'categories', 
             [$this, 'modelisme_categories']
          ); 
 
@@ -69,7 +70,7 @@ class Modelisme
             'Modelisme Competitions', 
             'Competitions', 
             'manage_options', 
-            'allCompetitions', 
+            'competitions', 
             [$this, 'modelisme_competition']
          ); 
 
@@ -78,7 +79,7 @@ class Modelisme
             'Scores', 
             'Scores', 
             'manage_options', 
-            'addScore', 
+            'scores', 
             [$this, 'modelisme_scores']
          ); 
 
@@ -87,7 +88,7 @@ class Modelisme
             'Point\'s System', 
             'Points', 
             'manage_options', 
-            'addPoints', 
+            'points', 
             [$this, 'modelisme_points']
          ); 
     }
@@ -167,7 +168,7 @@ class Modelisme
         }
 
         // SHOW CATEGORIES INFO TABLE
-        if($_REQUEST['page'] == 'allCategories' && $_POST['action'] == "") {
+        if($_REQUEST['page'] == 'categories' && $_POST['action'] == "") {
             $table = new Categories_List;
                 $table->prepare_items();
                 echo $table->display(); 
@@ -179,7 +180,7 @@ class Modelisme
             </form> 
         </div>
         <?php }
-                elseif ($_REQUEST['page'] == 'allCategories' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
+                elseif ($_REQUEST['page'] == 'categories' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
                     <table class="table-striped" style="padding-top: 20px;">
                         <thead>
                             <tr>
@@ -211,7 +212,7 @@ class Modelisme
                             </form>    
                     <?php } 
             //  SHOW FORMULARY TO ADD A NEW CATEGORY
-            elseif($_REQUEST['page'] == 'allCategories' && $_POST['action'] == 'Add Category')  { ?>
+            elseif($_REQUEST['page'] == 'categories' && $_POST['action'] == 'Add Category')  { ?>
                 <h3>Add new Category</h3> 
 
                 <form method="post">
@@ -250,7 +251,7 @@ class Modelisme
         }
 
         // SHOW COMPETITIONS INFO TABLE
-        if($_REQUEST['page'] == 'allCompetitions' && $_POST['action'] == "") {
+        if($_REQUEST['page'] == 'competitions' && $_POST['action'] == "") {
             $table = new Competitions_List;
                 $table->prepare_items();
                 echo $table->display(); 
@@ -261,7 +262,7 @@ class Modelisme
             </form> 
         </div>
         <?php }
-        elseif ($_REQUEST['page'] == 'allCompetitions' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
+        elseif ($_REQUEST['page'] == 'competitions' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') { ?>
             <table class="table-striped" style="padding-top: 15px;">
                 <thead>
                     <tr>
@@ -296,7 +297,7 @@ class Modelisme
                     </form>    
             <?php } 
         //  SHOW FORMULARY TO ADD A NEW COMPETITION 
-        elseif($_REQUEST['page'] == 'allCompetitions' && $_POST['action'] == 'Add Competition')  { ?>
+        elseif($_REQUEST['page'] == 'competitions' && $_POST['action'] == 'Add Competition')  { ?>
             <h3>Add new Competition</h3> 
     
             <form method="post">
@@ -312,6 +313,7 @@ class Modelisme
                 <div>
                     <label for="category_id"> Category Name : </label>
                     <select id="category_id" name="category_id">
+                        <option name="domain" selected="true" disabled="disabled">Choose a Category </option>
             <?php foreach($db->findAll('categories') as $category) { ?>
                         <option name="category_id" value="<?= $category->id ?>"> <?=$category->name ?> </option>
             <?php } ?>
@@ -349,7 +351,7 @@ class Modelisme
         }
 
         // SHOW CLUBS INFO TABLE
-        if($_REQUEST['page'] == 'allClubs' && $_POST['action'] == "") {
+        if($_REQUEST['page'] == 'clubs' && $_POST['action'] == "") {
             $table = new Club_List;
                 $table->prepare_items();
                 echo $table->display(); 
@@ -360,7 +362,7 @@ class Modelisme
                     </form> 
             </div>
         <?php }
-        elseif ($_REQUEST['page'] == 'allClubs' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {?>
+        elseif ($_REQUEST['page'] == 'clubs' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {?>
             <table class="table-striped" style="padding-top: 15px;">
                 <thead>
                     <tr>
@@ -408,7 +410,7 @@ class Modelisme
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW CLUB 
-        elseif($_REQUEST['page'] == 'allClubs' && $_POST['action'] == 'Add Club')  { ?>
+        elseif($_REQUEST['page'] == 'clubs' && $_POST['action'] == 'Add Club')  { ?>
             <h3>Add new Club</h3> 
 
             <form method="post">
@@ -483,7 +485,7 @@ class Modelisme
         }
 
         // SHOW MEMBERS INFO TABLE
-        if($_REQUEST['page'] == 'allMembers' && $_POST['action'] == "") {
+        if($_REQUEST['page'] == 'members' && $_POST['action'] == "") {
             $table = new Members_List;
                 $table->prepare_items();
                 echo $table->display(); 
@@ -496,7 +498,7 @@ class Modelisme
 
             <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
             <?php }
-            elseif ($_REQUEST['page'] == 'allMembers' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
+            elseif ($_REQUEST['page'] == 'members' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
             ?>
                 <table class="table-striped" style="padding-top: 15px;">
                 <thead>
@@ -540,7 +542,7 @@ class Modelisme
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW MEMBER 
-            elseif($_REQUEST['page'] == 'allMembers' && $_POST['action'] == 'Add Member')  { ?>
+            elseif($_REQUEST['page'] == 'members' && $_POST['action'] == 'Add Member')  { ?>
                 <h3>Add new Club</h3> 
 
                 <form method="post">
@@ -580,7 +582,7 @@ class Modelisme
 
                     <div style="padding-top: 10px;">
                         <select id="club" name="name" style="margin-bottom: 10px; margin-top: 10px">
-                            <option name="domain" selected="true" disabled="disabled">Choose a Club
+                            <option name="domain" selected="true" disabled="disabled">Choose a Club </option>
                     <?php
                         foreach($db->findAll('clubs') as $club) { ?>
                             <option name="domain" value="<?= $club->id ?>"> <?=$club->name ?> </option>
@@ -601,13 +603,105 @@ class Modelisme
     public function modelisme_scores() { ?>
         <div class="wrap">
             <h2><?php echo get_admin_page_title() ?></h2>
-
-            <p>In development...</p>
-        </div>
-
         <?php
         
+        $db = new Modelisme_Database_service; 
+
+        if(isset($_POST['send']) && $_POST['send'] == 'ok') { 
+            $db->save_rank();
+            // echo '<pre>'; var_dump($_POST);
+        }
+
+        if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete point row from database
+            $db->delete_row('points', $_POST['id']);
+        }
+
+        // SHOW POINTS SYSTEM INFO TABLE
+        if($_REQUEST['page'] == 'scores' && $_POST['action'] == "") {
+            $table = new Rank();
+                $table->prepare_items();
+                echo $table->display(); 
+        ?>
+            <form method="post">
+                <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
+                <input type="submit" value="Add Score" id="doaction" class="button action" name="action"/>
+            </form> 
+        </div>
+
+            <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
+            <?php }
+            elseif ($_REQUEST['page'] == 'scores' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
+            ?>
+                <table class="table-striped" style="padding-top: 15px;">
+                <thead>
+                    <tr>
+                        <th scope="col"><strong>ID</strong><th>
+                        <th scope="col"><strong>Club</strong><th>
+                        <th scope="col"><strong>Competition</strong><th>
+                        <th scope="col"><strong>Points</strong><th>
+                        <th scope="col"><strong>Course Number</strong><th>
+                    </tr>
+                </thead>
+                
+            <?php foreach($db->findRank() as $rank) {
+                ?>
+                    <tr>
+                        <td><?= $rank->id ?> <td>
+                        <td><?= $rank->id_club ?> <td>
+                        <td><?= $rank->id_competition ?> <td>
+                        <td><?= $rank->id_points ?> <td>
+                        <td><?= $rank->course_nb ?> <td>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="action" value="del" /> 
+                                <input type="hidden" name="id" value=" <?= $rank->id ?>" />
+                                <input type="submit" id="doaction" class="button action" value="del"/>
+                            </form>
+                        </td>
+                    </tr> 
+            <?php } ?>
+                </table>
+
+                <form method="post" class="tablenav bottom">
+                    <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
+                </form>    
+        <?php } 
+        //  SHOW FORMULARY TO ADD A NEW MEMBER 
+            elseif($_REQUEST['page'] == 'scores' && $_POST['action'] == 'Add Score')  { ?>
+                <h3>Add new Rank</h3> 
+
+                <form method="post">
+                    <input type="hidden" name="send" value="ok"/>
+                    <div>
+                        <label for="point_value"> Score : </label>
+                        <input type="text" id="score" name="score" class="widefat" required />
+                    </div>
+                    <div>
+                        <label for="place"> Place : </label>
+                        <input type="text" id="place" name="place" class="widefat" required />
+                    </div>
+
+                    <div style="padding-top: 10px;">
+                        <select id="points" name="name" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="domain" selected="true" disabled="disabled">Choose a Competition</option>
+                    <?php
+                        foreach($db->findAll('competitions') as $competition) { ?>
+                            <option name="domain" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
+                    <?php } ?>
+                        </select>
+                    <div>
+                        <input type="submit" id="doaction" class="button action" value="Add"/>
+                    </div>
+                </form>
+
+                <form method="post" class="tablenav bottom">
+                        <input type="submit" value="Go Back" id="doaction" class="button action" name="" />
+                </form> 
+            <?php        
+        }
     }
+        
+    
 
     public function modelisme_points() { ?>
         <div class="wrap">
@@ -626,20 +720,20 @@ class Modelisme
         }
 
         // SHOW POINTS SYSTEM INFO TABLE
-        if($_REQUEST['page'] == 'allPoints' && $_POST['action'] == "") {
+        if($_REQUEST['page'] == 'points' && $_POST['action'] == "") {
             $table = new Points();
                 $table->prepare_items();
                 echo $table->display(); 
         ?>
             <form method="post">
                 <input type="submit" value="View Details" id="doaction" class="button action" name="action" />
-                <input type="submit" value="Add Member" id="doaction" class="button action" name="action"/>
+                <input type="submit" value="Add Point" id="doaction" class="button action" name="action"/>
             </form> 
         </div>
 
             <!--  SHOW ALL MEMBERS TABLE AND COMPLETE INFO -->
             <?php }
-            elseif ($_REQUEST['page'] == 'allPoints' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
+            elseif ($_REQUEST['page'] == 'points' && $_POST['action'] == 'View Details' || $_POST['action'] == 'del') {
             ?>
                 <table class="table-striped" style="padding-top: 15px;">
                 <thead>
@@ -675,26 +769,26 @@ class Modelisme
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW MEMBER 
-            elseif($_REQUEST['page'] == 'allPoints' && $_POST['action'] == 'Add Score')  { ?>
-                <h3>Add new Club</h3> 
+            elseif($_REQUEST['page'] == 'points' && $_POST['action'] == 'Add Point')  { ?>
+                <h3>Add new Point's system</h3> 
 
                 <form method="post">
                     <input type="hidden" name="send" value="ok"/>
                     <div>
                         <label for="point_value"> Score : </label>
-                        <input type="text" id="name" name="last_name" class="widefat" required />
+                        <input type="text" id="score" name="score" class="widefat" required />
                     </div>
                     <div>
                         <label for="place"> Place : </label>
-                        <input type="text" id="name" name="first_name" class="widefat" required />
+                        <input type="text" id="place" name="place" class="widefat" required />
                     </div>
 
                     <div style="padding-top: 10px;">
-                        <select id="club" name="competition" style="margin-bottom: 10px; margin-top: 10px">
-                            <option name="domain" selected="true" disabled="disabled">Choose a Competition
+                        <select id="points" name="name" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="domain" selected="true" disabled="disabled">Choose a Competition</option>
                     <?php
                         foreach($db->findAll('competitions') as $competition) { ?>
-                            <option name="domain" value="<?= $competition->id ?>"> <?=$competition->name ?> </option>
+                            <option name="domain" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
                     <?php } ?>
                         </select>
                     <div>
@@ -707,8 +801,6 @@ class Modelisme
                 </form> 
             <?php        
         }
-
-        
     }
 }
 

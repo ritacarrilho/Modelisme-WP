@@ -425,10 +425,28 @@ class Modelisme_Database_service
 public function findPoints() {
     global $wpdb;        
     // var_dump($id);
-    $result = $wpdb->get_results("SELECT {$wpdb->prefix}points.*, {$wpdb->prefix}competitions.* 
+    $result = $wpdb->get_results("SELECT {$wpdb->prefix}points.*, {$wpdb->prefix}competitions.name 
                                         FROM {$wpdb->prefix}points 
                                         JOIN {$wpdb->prefix}competitions
                                         ON {$wpdb->prefix}points.id_competition = {$wpdb->prefix}competitions.id 
+                                ;");
+
+// echo '<pre>'; var_dump($result); echo '</pre>';
+    return $result;
+}
+
+// FIND ALL Points
+public function findRank() {
+    global $wpdb;        
+    // var_dump($id);
+    $result = $wpdb->get_results("SELECT {$wpdb->prefix}ranks.*, {$wpdb->prefix}competitions.name, {$wpdb->prefix}points.*
+                                        FROM {$wpdb->prefix}ranks 
+                                        JOIN {$wpdb->prefix}clubs
+                                        ON {$wpdb->prefix}ranks.id_club = {$wpdb->prefix}clubs.id
+                                        JOIN {$wpdb->prefix}competitions
+                                        ON {$wpdb->prefix}ranks.id_competition = {$wpdb->prefix}competitions.id
+                                        JOIN {$wpdb->prefix}points
+                                        ON {$wpdb->prefix}ranks.id_points = {$wpdb->prefix}points.id  
                                 ;");
 
 // echo '<pre>'; var_dump($result); echo '</pre>';
