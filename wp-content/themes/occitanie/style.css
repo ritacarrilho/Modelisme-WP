@@ -6,12 +6,14 @@ Version: 0.0.1
 Tags: bootstrap, html5, CSS3
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Mochiy+Pop+One&family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 /* Variables */
 :root {
-    --dark-grey: #524c51;
+    --dark-grey: #24221f;
+    --medium-grey: #4c4a4e;
     --white: #ffffff;
+    --aqua-blue: #22d0f7;
 }
 /* Reset classes */
 * {
@@ -23,6 +25,7 @@ Tags: bootstrap, html5, CSS3
 
 body {
     font-family: 'Roboto', sans-serif;
+    line-height: 28px;
 }
 
 a,
@@ -54,30 +57,95 @@ html {
 }
 
 .admin-bar .menu {
-	top: 32px; /* on prend en compte le décalage */
+	top: 32px; 
 }
+
+/* HEADER */
+h1 {
+    /* font-family: 'Mochiy Pop One', sans-serif; */
+    font-family: 'Kanit', sans-serif;
+    font-size: 25px;
+}
+
+    h1 span{
+        color: var(--aqua-blue);
+    }
+
+
+
 
 .wrapper {
     padding: 0 15vw;
 }
 /* FOOTER */
+footer p {
+    font-weight: 300;
+}
+
+footer h4 {
+    font-size: 25px;
+    font-weight: 400;
+    padding-bottom: 30px;
+}
+
 .logo-banner {
     background-color: var(--white);
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     padding: 50px 15vw;
 }
 
     .logo-banner img {
         height: 100px;
         width: auto;
+        opacity: 0.6;
     }
 
-.footer {
-    background-color: var(--dark-grey);
+.footer-info {
+    background-color: var(--medium-grey);
     color: var(--white);
     display: flex;
     justify-content: space-evenly;
+    gap: 40px;
     padding: 50px 15vw;
-
 }
+
+    .footer-info-element {
+        flex: 1;
+    }
+
+    .footer-info-element-icons {
+        display: flex;
+        flex-direction: column;
+        /* gap: 5px; */
+        padding-top: 30px;
+    }
+
+    .footer-info-element-icons div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-info-element-icons i {
+        color: var(--aqua-blue);
+    }
+
+.footer-rights, .logo-container {
+    background-color: var(--dark-grey);
+    color: white;
+    display: flex;
+    padding: 25px 15vw;
+    justify-content: space-between;
+}
+
+    .network-icons {
+        display: flex;
+        width: 15vw;
+        justify-content: space-evenly;
+        font-size: 20px;
+    }
+
+        .network-icons i:hover {
+            color: var(--aqua-blue);
+        }

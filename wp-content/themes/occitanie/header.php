@@ -8,11 +8,30 @@
 </head>
 
 <body <?php body_class(); ?>>
-    <main class="wrapper">  
     <header class="header">
-        <a href="<?php echo home_url( '/' ); ?>"> <!-- redirect to home page -->
-            <h1>Occitanie Modelisme</h1>
-            <!-- <img src="<?php // echo get_template_directory_uri(); ?>/img/" alt="Logo"> -->
-        </a>  
+        <div class="logo-container">
+            <a href="<?php echo home_url( '/' ); ?>"> <!-- redirect to home page -->
+                <h1>Occitanie <span>Modelisme</span></h1>
+            </a> 
+
+            <div class="network-icons">
+                <a href="">
+                <i class="fa-solid fa-rss"></i> 
+                </a>
+                <a href="">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+
+        <nav>
+            
+        </nav>
+
     </header>
-    </main>
