@@ -30,8 +30,13 @@
             </div>
         </div>
 
-        <nav>
-            
+        <nav class="navbar">
+            <a href="">Home</a>
+            <a href="">Competitions</a>
+            <a href="">Clubs</a>
+            <a href="">Ranking</a>
+            <a href="">Store</a>
+            <a href="">About Us</a>
         </nav>
 
     </header>
