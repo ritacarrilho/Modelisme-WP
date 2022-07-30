@@ -65,23 +65,33 @@ html {
     padding: 0 15vw;
 }
 
-/* HEADER */
-h1 {
+/* LOGO */
+#logo {
     /* font-family: 'Mochiy Pop One', sans-serif; */
     font-family: 'Kanit', sans-serif;
     font-size: 25px;
 }
 
-    h1 span{
+    #logo > span{
         color: var(--aqua-blue);
     }
 
+/* HEADER */
+#site-header img {
+    width: 100%;
+    height: auto;
+}
+
 /* Navbar */
+nav {
+    background-color: var(--white);
+}
+
 .navbar {
     background-color: var(--white);
     color: var(--light-grey);
     font-weight: 500;
-    padding: 5vh 15vw;
+    padding: 4vh 15vw;
     display: flex;
     justify-content: space-between;
     width: 75vw;
@@ -92,6 +102,18 @@ h1 {
     color: var(--aqua-blue);
 }
 
+.home-title-wrapper {
+    width: 40vw;
+    text-align: right;
+}
+    .home-title {
+        position: relative;
+        top: -274px;
+        right: -527px;
+        font-size: 30px;
+        line-height: 1.4;
+        font-weight: 500;
+    }
 
 /* FOOTER */
 footer p {
@@ -165,3 +187,9 @@ footer h4 {
         .network-icons i:hover {
             color: var(--aqua-blue);
         }
+
+.error{
+     text-align: center; 
+     padding: 15px;
+     font-weight: 600;
+}

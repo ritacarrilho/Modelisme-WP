@@ -11,7 +11,7 @@
     <header class="header">
         <div class="logo-container">
             <a href="<?php echo home_url( '/' ); ?>"> <!-- redirect to home page -->
-                <h1>Occitanie <span>Modelisme</span></h1>
+                <p id="logo">Occitanie <span>Modelisme</span></p>
             </a> 
 
             <div class="network-icons">
@@ -30,13 +30,11 @@
             </div>
         </div>
 
-        <nav class="navbar">
-            <a href="">Home</a>
-            <a href="">Competitions</a>
-            <a href="">Clubs</a>
-            <a href="">Ranking</a>
-            <a href="">Store</a>
-            <a href="">About Us</a>
-        </nav>
 
+        <?php wp_nav_menu([ // menu
+                "theme_location" => "menu-sup",
+                "container" => "nav", // create nav element
+                "menu_class" => "navbar", // define a css class to style the menu
+                "menu_id" => "menu",
+        ]); ?>
     </header>

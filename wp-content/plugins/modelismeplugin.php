@@ -670,6 +670,7 @@ class Modelisme
                 </form>    
         <?php } 
         //  SHOW FORMULARY TO ADD A NEW RANKS / SCORE 
+        // TODO: fix dropdow choises according to competition
             elseif($_REQUEST['page'] == 'scores' && $_POST['action'] == 'Add Score')  { ?>
                 <h3>Add new Rank</h3> 
 
