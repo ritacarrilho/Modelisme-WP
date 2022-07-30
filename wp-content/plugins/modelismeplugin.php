@@ -614,7 +614,7 @@ class Modelisme
         }
 
         if(isset($_POST['action']) && $_POST['action'] == 'del') { // delete point row from database
-            $db->delete_row('points', $_POST['id']);
+            $db->delete_row('rank', $_POST['id']);
         }
 
         // SHOW RANK SYSTEM INFO TABLE
@@ -641,6 +641,7 @@ class Modelisme
                         <th scope="col"><strong>Competition</strong><th>
                         <th scope="col"><strong>Points</strong><th>
                         <th scope="col"><strong>Course Number</strong><th>
+                        <th scope="col"><strong>Competition Date</strong><th>
                     </tr>
                 </thead>
                 
@@ -652,6 +653,7 @@ class Modelisme
                         <td><?= $rank->competition_name ?> <td>
                         <td><?= $rank->id_points ?> <td>
                         <td><?= $rank->course_nb ?> <td>
+                        <td><?= $rank->compet_date ?> <td>
                         <td>
                             <form method="post">
                                 <input type="hidden" name="action" value="del" /> 
@@ -673,23 +675,49 @@ class Modelisme
 
                 <form method="post">
                     <input type="hidden" name="send" value="ok"/>
-                    <div>
-                        <label for="point_value"> Score : </label>
-                        <input type="text" id="score" name="score" class="widefat" required />
-                    </div>
-                    <div>
-                        <label for="place"> Place : </label>
-                        <input type="text" id="place" name="place" class="widefat" required />
-                    </div>
 
-                    <div style="padding-top: 10px;">
-                        <select id="points" name="name" style="margin-bottom: 10px; margin-top: 10px">
-                            <option name="domain" selected="true" disabled="disabled">Choose a Competition</option>
+                    <div>
+                        <select id="id_club" name="id_club" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="id_club" selected="true" disabled="disabled">Choose a Club</option>
                     <?php
-                        foreach($db->findAll('competitions') as $competition) { ?>
-                            <option name="domain" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
+                        foreach($db->findAll('clubs') as $club) { ?>
+                            <option name="id_club" value="<?= $club->id ?>"> <?= $club->name ?> </option>
                     <?php } ?>
                         </select>
+                    </div>
+
+                    <div>
+                        <select id="id_competition" name="id_competition" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="id_competition" selected="true" disabled="disabled">Choose a Competition</option>
+                    <?php
+                        $competitions = $db->findAll('competitions');
+                        foreach($competitions as $competition) { ?>
+                            <option name="id_competition" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
+                    <?php } ?>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select id="id_points" name="id_points" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="id_points" selected="true" disabled="disabled">Choose the points</option>
+                    <?php
+
+                        $points= $db->findAll('points');
+                        foreach($points as $point) { ?>
+                            <option name="id_points" value="<?= $point->id ?>"> <?= $point->point_value ?> </option>
+                    <?php } ?>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="course_nb"> Course Number : </label>
+                        <input type="number" id="course_nb" name="course_nb" class="widefat" required />
+                    </div>
+
+                    <div>
+                        <label for="compet_date"> Date : </label>
+                        <input type="date" id="compet_date" name="compet_date" class="widefat" required />
+                    </div>
                     <div>
                         <input type="submit" id="doaction" class="button action" value="Add"/>
                     </div>
@@ -776,7 +804,7 @@ class Modelisme
                     <input type="hidden" name="send" value="ok"/>
                     <div>
                         <label for="point_value"> Score : </label>
-                        <input type="text" id="score" name="score" class="widefat" required />
+                        <input type="text" id="point_value" name="point_value" class="widefat" required />
                     </div>
                     <div>
                         <label for="place"> Place : </label>
@@ -784,13 +812,14 @@ class Modelisme
                     </div>
 
                     <div style="padding-top: 10px;">
-                        <select id="points" name="name" style="margin-bottom: 10px; margin-top: 10px">
-                            <option name="domain" selected="true" disabled="disabled">Choose a Competition</option>
+                        <select id="id_competition" name="id_competition" style="margin-bottom: 10px; margin-top: 10px">
+                            <option name="id_competition" selected="true" disabled="disabled">Choose a Competition</option>
                     <?php
                         foreach($db->findAll('competitions') as $competition) { ?>
-                            <option name="domain" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
+                            <option name="id_competition" value="<?= $competition->id ?>"> <?= $competition->name ?> </option>
                     <?php } ?>
                         </select>
+                    </div>
                     <div>
                         <input type="submit" id="doaction" class="button action" value="Add"/>
                     </div>

@@ -61,6 +61,10 @@ html {
 	top: 32px; 
 }
 
+.wrapper {
+    padding: 0 15vw;
+}
+
 /* HEADER */
 h1 {
     /* font-family: 'Mochiy Pop One', sans-serif; */
@@ -80,7 +84,7 @@ h1 {
     padding: 5vh 15vw;
     display: flex;
     justify-content: space-between;
-    width: 60vw;
+    width: 75vw;
     text-transform: uppercase;
 }
 
@@ -89,9 +93,6 @@ h1 {
 }
 
 
-.wrapper {
-    padding: 0 15vw;
-}
 /* FOOTER */
 footer p {
     font-weight: 300;
@@ -122,7 +123,7 @@ footer h4 {
     display: flex;
     justify-content: space-evenly;
     gap: 40px;
-    padding: 50px 15vw;
+    padding: 50px 15vw; 
 }
 
     .footer-info-element {

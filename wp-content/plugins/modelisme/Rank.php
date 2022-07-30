@@ -55,6 +55,7 @@ class Rank extends WP_List_Table
             case 'competition_name':
             case 'id_points':
             case 'course_nb':
+            case 'compet_date':
                 return $item->$column_name;
                 break;
             default:
@@ -68,7 +69,8 @@ class Rank extends WP_List_Table
             'club_name' => 'Club',
             'competition_name' => 'Competition',
             'id_points' => 'Score',
-            'course_nb' => 'Course Number'
+            'course_nb' => 'Course Number',
+            'compet_date' => 'Competition Date'
         ];
 
         return $columns;
@@ -82,6 +84,8 @@ class Rank extends WP_List_Table
         return $sortable = [ 'id' => ['id', true], 
                             'id_points' => ['id_points', true],
                             'course_nb' => ['course_nb', true],
+                            'compet_date' => ['compet_date', true],
+
         ];
     }
 }

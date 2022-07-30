@@ -48,7 +48,7 @@
         </div>
 
         <div class="footer-rights">
-            <p>&copy; 2013 Web world. All rights reserved. Theme by cssautther</p>
+            <p>&copy; <?php echo date("Y"); ?> Occitanie Modelisme. All rights reserved. Theme by Rita</p>
             <div class="network-icons">
                 <a href="">
                    <i class="fa-solid fa-rss"></i> 

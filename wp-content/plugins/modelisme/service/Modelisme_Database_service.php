@@ -283,7 +283,8 @@ class Modelisme_Database_service
                         "id INT AUTO_INCREMENT PRIMARY KEY, " . 
                         "id_club INT NOT NULL, " .
                         "id_points INT NOT NULL, " .
-                        "course_nb INT NOT NULL " .
+                        "course_nb INT NOT NULL, " .
+                        "compet_date DATE NOT NULL " .
                         ");");
 
         $count_ranks = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}ranks;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
@@ -294,6 +295,7 @@ class Modelisme_Database_service
                  'id_club' => 1,
                  'id_points' => 1,
                  'course_nb' => 1,
+                 'compet_date' => '2022-04-23'
             ]);
         }
 // create foreign keys
@@ -467,6 +469,20 @@ public function findRank() {
     return $result;
 }
 
+public function findPointsCompetitions() {
+    global $wpdb;        
+    // var_dump($id);
+    $result = $wpdb->get_results("SELECT {$wpdb->prefix}points.*, {$wpdb->prefix}points.id as points_id, {$wpdb->prefix}competitions.* 
+                                    FROM {$wpdb->prefix}points 
+                                    JOIN {$wpdb->prefix}competitions 
+                                    ON {$wpdb->prefix}points.id_competition = {$wpdb->prefix}competitions.id
+                                    -- WHERE {$wpdb->prefix}competitions.id = %s
+                                ;");
+
+// echo '<pre>'; var_dump($result); echo '</pre>';
+    return $result;
+}
+
 // SAVE CLUB IN TABLE
     public function save_club() {
         global $wpdb;
@@ -590,9 +606,9 @@ public function findRank() {
         //  recover data from method post 
         $values = [
             'id_club' => $_POST['id_club'],
-            'id_competition' => $_POST['id_competition'],
             'id_points' => $_POST['id_points'],
             'course_nb' => $_POST['course_nb'],
+            'compet_date' => $_POST['compet_date']
         ];
 
          $wpdb->insert("{$wpdb->prefix}ranks", $values);
@@ -606,8 +622,10 @@ public function findRank() {
         $values = [
             'point_value' => $_POST['point_value'],
             'place' => $_POST['place'],
-            'id_competition' => $_POST['name'],
+            'id_competition' => $_POST['id_competition'],
         ];
+        // echo '<pre>'; var_dump($values);
+
 
         $wpdb->insert("{$wpdb->prefix}points", $values);
     }
