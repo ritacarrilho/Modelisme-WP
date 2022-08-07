@@ -15,6 +15,8 @@ Tags: bootstrap, html5, CSS3
     --white: #ffffff;
     --aqua-blue: #22d0f7;
     --light-grey: #b9b9b9;
+    --background-light-grey: #eeeeee;
+    --wrapper-padding: 12vw; 
 }
 /* Reset classes */
 * {
@@ -48,6 +50,16 @@ button {
     border: 0;
 }
 
+h5 {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+p {
+    font-weight: 300;
+    font-size: 15px;
+}
+
 html {
     margin-top: 0px !important;
 }
@@ -62,7 +74,7 @@ html {
 }
 
 .wrapper {
-    padding: 0 15vw;
+    padding: 0 var(--wrapper-padding);
 }
 
 /* LOGO */
@@ -91,37 +103,96 @@ nav {
     background-color: var(--white);
     color: var(--light-grey);
     font-weight: 500;
-    padding: 4vh 15vw;
+    padding: 3vh var(--wrapper-padding);
     display: flex;
-    justify-content: space-between;
-    width: 75vw;
     text-transform: uppercase;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
 }
 
-.navbar > a:hover{
-    color: var(--aqua-blue);
-}
+    /* Menu */
+    #menu > li:hover{
+         color: var(--aqua-blue);
+    }
 
+/* HOME PAGE */ 
 .home-title-wrapper {
-    width: 40vw;
-    text-align: right;
+    text-align: center;
 }
     .home-title {
         position: relative;
-        top: -274px;
-        right: -527px;
+        top: -348px;
         font-size: 30px;
+        color: white;
         line-height: 1.4;
+        font-weight: 300;
+    }
+
+#home-p {
+    color: var(--medium-grey);
+    text-align: center;
+}
+
+    #home-p h2 {
+        font-weight: 300;
+        padding-bottom: 10px;
+    }
+
+    #home-p span {
         font-weight: 500;
     }
 
+    #home-p p {
+        font-size: 15px;
+        padding-bottom: 50px;
+        font-weight: 300;
+    }
+
+    #home-p i {
+        font-size: 70px;
+    }
+
+    .home-grid {
+        display: grid;
+        justify-content: space-around;
+        align-items: stretch;
+        grid-template-columns: 22vw 22vw 22vw;
+    }
+
+    /* .home-grid h5{
+        font-size: 15px;
+        font-weight: 400;
+    } */
+
+#home-images-aside {
+    background-color: var(--background-light-grey);
+    display: flex;
+}
+
+    .home-articles-grid {
+        width: 70vw;
+    }
+
+        .home-articles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            justify-content: space-around;
+            align-items: stretch;
+        }
+
+
+/* POSTS PAGE */
+
+
 /* FOOTER */
 footer p {
+    font-size: 15px;
     font-weight: 300;
 }
 
 footer h4 {
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 400;
     padding-bottom: 30px;
 }
@@ -130,7 +201,7 @@ footer h4 {
     background-color: var(--white);
     display: flex;
     justify-content: space-between;
-    padding: 50px 15vw;
+    padding: 50px var(--wrapper-padding);
 }
 
     .logo-banner img {
@@ -144,8 +215,8 @@ footer h4 {
     color: var(--white);
     display: flex;
     justify-content: space-evenly;
-    gap: 40px;
-    padding: 50px 15vw; 
+    gap: 45px;
+    padding: 30px var(--wrapper-padding); 
 }
 
     .footer-info-element {
@@ -155,7 +226,6 @@ footer h4 {
     .footer-info-element-icons {
         display: flex;
         flex-direction: column;
-        /* gap: 5px; */
         padding-top: 30px;
     }
 
@@ -173,14 +243,14 @@ footer h4 {
     background-color: var(--dark-grey);
     color: white;
     display: flex;
-    padding: 25px 15vw;
+    padding: 25px var(--wrapper-padding);
     justify-content: space-between;
 }
 
     .network-icons {
         display: flex;
         width: 15vw;
-        justify-content: space-evenly;
+        justify-content: space-around;
         font-size: 20px;
     }
 

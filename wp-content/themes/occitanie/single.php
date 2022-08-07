@@ -1,7 +1,6 @@
-<!-- each post -->
-<?php get_header(); ?>
-<p>this is the single</p>
-  <?php if( have_posts() ) : while( have_posts() ) : the_post(); ?>
+<!-- Each Post Template -->
+<?php get_header(); 
+  if( have_posts() ) : while( have_posts() ) : the_post(); ?>
     
     <article class="post">
       <?php the_post_thumbnail(); ?>

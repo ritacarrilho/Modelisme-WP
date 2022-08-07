@@ -1,5 +1,8 @@
 <?php
 
+// global $categories;
+// $categories = $wpdb->get_results("SELECT {$table_prefix}categories.name FROM {$table_prefix}categories"); 
+
 function modelisme_setup()
 {
     global $content_width; 
@@ -28,10 +31,10 @@ add_action('after_setup_theme', 'modelisme_setup');
 // Ajouter la prise en charge des images mises en avant
 add_theme_support( 'post-thumbnails' );
 
-// Ajouter automatiquement le titre du site dans l'en-tête du site
+// Add the site title 
 add_theme_support( 'title-tag' );
 
-// Définir d'autres tailles d'images
+// define different image sizes
 // add_image_size( 'products', 800, 600, false );
 // add_image_size( 'square', 256, 256, false );
 
@@ -61,3 +64,27 @@ function register_menu() // instanciate a menu reference
 }
 
 add_action('init', 'register_menu'); // menu hook
+
+// Register a new sidebar simply named 'sidebar'
+function sidebar_widgets_init() {
+    register_sidebar( array(
+                    'name'          => 'Sidebar',
+                    'id'            => 'sidebar',
+                    'before_widget' => '<aside>',
+                    'after_widget'  => '</aside>',
+                    'before_title'  => '<h2>',
+                    'after_title'   => '</h2>',
+    ) );
+}
+
+add_action( 'widgets_init', 'sidebar_widgets_init' ); // Hook the widget initiation and run our function
+
+// Register a new sidebar simply named 'sidebar'
+function footer() {
+    $categories = ['Course d’automobiles radio commandées', 'Modélisme Aérien', 'Modélisme Naval'];
+    return $categories;
+}
+
+add_action( 'wp_footer', 'footer' ); // Hook the widget initiation and run our function
+
+// TODO: metadata and posts change in front office

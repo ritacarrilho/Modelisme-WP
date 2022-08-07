@@ -1,12 +1,25 @@
+    <?php require('wp-load.php'); 
+    global $wpdb; ?>
     <footer>
-        <?php wp_footer(); ?> <!-- recover scripts and styles -->
+        <?php wp_footer();  // recover scripts and styles
+        ?>
 
         <div class="footer-info">
+
+            <?php 
+                //$categories = $wpdb->get_results("SELECT {$table_prefix}categories.name FROM {$table_prefix}categories"); 
+                // echo '<pre>'; print_r($categories); echo '</pre>';
+            ?>
+
             <div class="footer-info-element">
                 <h4>Popular Sports</h4>
                 <p>Course d’automobiles radio commandées</p>
                 <p>Modélisme Aérien</p>
                 <p>Modélisme Naval</p>
+                <?php
+                //foreach($categories as $category) { ?>
+                    <p><?php // echo $category;  ?> </p>
+            <?php //}?>
             </div>
 
             <div class="footer-info-element">
