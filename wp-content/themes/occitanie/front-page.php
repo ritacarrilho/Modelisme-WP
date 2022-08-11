@@ -14,7 +14,7 @@
     </div>
 
 	<div class="home-title-wrapper">
-		<span class="home-title">Bienvenue au Modélisme Interdépartemental de l’Occitanie</span>
+		<span class="home-title">Modélisme Interdépartemental de l’Occitanie</span>
 	</div>
     
     <?php endif; ?>
@@ -42,30 +42,32 @@
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting of the industry. Lorem Ipsum has been</p>
             </div>
         </div>
+        <?php get_sidebar(); ?>
     </section>
 
-    <section id="home-images-aside" class="wrapper">
+    <section id="home-images-grid" class="wrapper">
+        <h2>Les types de modélisme</h2>
         <div class="home-articles-grid">
-            <div>
-                <img src="" alt="">
-                <h5>Modélisme Naval</h5>
-                <p>Lorem Ipsum is simply dummy text of the</p>
-            </div>
+        <?php 
+            // get all posts categories
+            $categories = get_categories( array(
+                'orderby' => 'name',
+                'order'   => 'ASC'
+            ) );
 
-            <div>
-                <img src="" alt="">
-                <h5>Modélisme Naval</h5>
-                <p>Lorem Ipsum is simply dummy text of the</p>
+            foreach($categories as $category) : 
+            //     echo '<pre>'; 
+            //     var_dump($category->name);  
+            //     echo '</pre>';
+        ?>
+            <div class="grid-el">
+                <img src=" <?= esc_url( get_template_directory_uri() .'/img/' . $category->slug . '.jpg') ?>" alt="<?= $category->name; ?>">
+                <h5><?= $category->name ?></h5>
+                <p><?= $category->description ?></p>
             </div>
-
-            <div>
-                <img src="" alt="">
-                <h5>Modélisme Naval</h5>
-                <p>Lorem Ipsum is simply dummy text of the</p>
-            </div>
+            <?php endforeach; ?>
         </div>
 
-        <?php get_sidebar(); ?>
     </section>
 
 <?php 

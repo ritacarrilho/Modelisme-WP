@@ -50,6 +50,13 @@ button {
     border: 0;
 }
 
+h2 {
+    font-weight: 400;
+    padding: 20px 0px;
+    color: var(--dark-grey);
+    text-align: center;
+}
+
 h5 {
     font-size: 15px;
     font-weight: 400;
@@ -160,27 +167,31 @@ nav {
         grid-template-columns: 22vw 22vw 22vw;
     }
 
-    /* .home-grid h5{
-        font-size: 15px;
-        font-weight: 400;
-    } */
-
-#home-images-aside {
+#home-images-grid {
     background-color: var(--background-light-grey);
-    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
     .home-articles-grid {
-        width: 70vw;
+        display: grid;
+        grid-template-columns: 20vw 20vw 20vw;
+        justify-content: space-around;
     }
 
-        .home-articles-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            justify-content: space-around;
-            align-items: stretch;
-        }
+    .home-articles-grid img {
+        width: 100%;
+    }
 
+    .grid-el { 
+       border: 1px solid var(--light-grey);
+    }
+
+    .grid-el p,
+    .grid-el h5 { 
+        padding-left: 10px;
+        padding-right: 10px;
+     }
 
 /* POSTS PAGE */
 
@@ -258,8 +269,8 @@ footer h4 {
             color: var(--aqua-blue);
         }
 
+/* 404 */
 .error{
      text-align: center; 
-     padding: 15px;
-     font-weight: 600;
 }
+

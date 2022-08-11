@@ -1,18 +1,11 @@
 <?php get_header(); 
+?>
 
-if(get_header_image()) : ?> <!-- image banner -->
-    <div id="site-header">
-         <img 
-            src="<?php header_image() ?>" 
-            width="<?php echo absint( get_custom_header()->width ) ?>%"
-            height="<?php echo absint( get_custom_header()->height ) ?>"
-            >
+	<div class="error wrapper">
+        <img src=" <?= esc_url( get_template_directory_uri() .'/img/404.jpg') ?>" alt="404 Not Found" style="width: 100%">
+        <h5>Page Not Found</h5>
     </div>
-	<?php endif; ?>
-
-	<div class="error">404 - Not Found</div>
 
 <?php 
-	get_template_part( 'parts/banner' ); 
 	get_footer();
 ?>

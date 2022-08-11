@@ -5,21 +5,21 @@
         ?>
 
         <div class="footer-info">
-
-            <?php 
-                //$categories = $wpdb->get_results("SELECT {$table_prefix}categories.name FROM {$table_prefix}categories"); 
-                // echo '<pre>'; print_r($categories); echo '</pre>';
-            ?>
+            <div class="footer-info-element">
+                <h4>L'occitanie</h4>
+                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p> 
+                <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything.</p>
+            </div>
 
             <div class="footer-info-element">
-                <h4>Popular Sports</h4>
-                <p>Course d’automobiles radio commandées</p>
-                <p>Modélisme Aérien</p>
-                <p>Modélisme Naval</p>
-                <?php
-                //foreach($categories as $category) { ?>
-                    <p><?php // echo $category;  ?> </p>
-            <?php //}?>
+                <h4>Nous Modélismes</h4>
+            <?php 
+                // get all posts categories
+                $categories = get_categories();
+
+                foreach($categories as $category) {
+                    echo '<p>' . $category->name . '</p>';
+                } ?>
             </div>
 
             <div class="footer-info-element">
@@ -28,13 +28,7 @@
             </div>
 
             <div class="footer-info-element">
-                <h4>A little about us</h4>
-                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p> 
-                <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything.</p>
-            </div>
-
-            <div class="footer-info-element">
-                <h4>Get in touch</h4>
+                <h4>Contactez nous</h4>
                 <p>Lorem Ipsum is simply dummy of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
 
                 <div class="footer-info-element-icons">
