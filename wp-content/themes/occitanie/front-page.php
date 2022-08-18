@@ -1,5 +1,25 @@
 <!-- Home Page -->
 <?php 
+    require_once("wp-load.php");
+
+    // get all modelisme categories
+    $cat_id = $wpdb->get_results("SELECT {$wpdb->prefix}categories.id FROM {$wpdb->prefix}categories;");
+
+    $compets = $wpdb->get_results($wpdb->prepare("SELECT {$wpdb->prefix}competitions.name as compet, {$wpdb->prefix}competitions.category_id, {$wpdb->prefix}categories.name as category 
+                                                FROM {$wpdb->prefix}competitions 
+                                                JOIN {$wpdb->prefix}categories 
+                                                ON {$wpdb->prefix}competitions.category_id = {$wpdb->prefix}categories.id;"));
+
+    // get all posts categories
+    $categories = get_categories( array(
+        'orderby' => 'name',
+        'order'   => 'ASC'
+    ) );
+
+    
+    // echo '<pre>'; print_r($compets); echo '</pre>';
+    // echo '<pre>'; print_r($cat_id); echo '</pre>';
+
     get_header(); 
 ?>
 
@@ -21,51 +41,59 @@
 
     <section id="home-p" class="wrapper">
         <h2>Lorem Ipsum is <span>simply dummy</span> of the printing.</h2>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make atype specimen book. It has survived not only five centuries.</p>
+        <p><?= $categories[0]->description ?></p>
 
-        <div class="home-grid">
-            <div>
-                <i class="fa-solid fa-car-side"></i>
-                <h5>Course d’automobiles radio commandées</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting of the industry. Lorem Ipsum has been</p>
+        <div class="home-aside-wrapper">
+            <div class="home-grid">
+                <?php for( $i = 0; $i < count($cat_id); $i++ ): ?>
+                    <div>
+                    <?php if($cat_id[$i]->id == 1) {?>
+                            <i class="fa-solid fa-car-side"></i>
+                            <h5><?php echo $compets[$i]->category;?></h5>
+                            <?php foreach($compets as $compet) {
+                                if($compet->category_id == 1) {?>
+                                <p class="p"><?php echo $compet->compet; ?></p>
+                            <?php } }
+                            
+                    } elseif($cat_id[$i]->id == 2) {?>
+                            <i class="fa-solid fa-jet-fighter"></i>
+                            <h5><?php echo $compets[$i]->category;?></h5>
+                            <?php foreach($compets as $compet) {
+                                if($compet->category_id == 2) {?>
+                                <p class="p"><?php echo $compet->compet; ?></p>
+                            <?php }}
+                    } elseif($cat_id[$i]->id == 3) {?>
+                            <i class="fa-solid fa-sailboat"></i>
+                            <h5><?php echo $compets[$i]->category;?></h5>
+                            <?php foreach($compets as $compet) {
+                                if($compet->category_id == 3) {?>
+                                <p class="p"><?php echo $compet->compet; ?></p>
+                            <?php }}
+                        } else {?>
+                            <p class="p">Pas de competitions en ce moment...</p>
+                    <?php }    
+                    ?>
             </div>
-
-            <div>
-                <i class="fa-solid fa-jet-fighter"></i>
-                <h5>Modélisme Aérien</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting of the industry. Lorem Ipsum has been</p>
-            </div>
-
-            <div>
-                <i class="fa-solid fa-sailboat"></i>
-                <h5>Modélisme Naval</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting of the industry. Lorem Ipsum has been</p>
-            </div>
+                <?php endfor ?>
         </div>
+
         <?php get_sidebar(); ?>
+        </div>
     </section>
 
     <section id="home-images-grid" class="wrapper">
         <h2>Les types de modélisme</h2>
         <div class="home-articles-grid">
         <?php 
-            // get all posts categories
-            $categories = get_categories( array(
-                'orderby' => 'name',
-                'order'   => 'ASC'
-            ) );
-
             foreach($categories as $category) : 
-            //     echo '<pre>'; 
-            //     var_dump($category->name);  
-            //     echo '</pre>';
+                if($category->slug != 'modelisme') :
         ?>
             <div class="grid-el">
                 <img src=" <?= esc_url( get_template_directory_uri() .'/img/' . $category->slug . '.jpg') ?>" alt="<?= $category->name; ?>">
                 <h5><?= $category->name ?></h5>
                 <p><?= $category->description ?></p>
             </div>
-            <?php endforeach; ?>
+            <?php endif; endforeach; ?>
         </div>
 
     </section>

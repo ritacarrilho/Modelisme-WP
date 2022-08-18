@@ -20,6 +20,12 @@ get_header(); ?>
     }
 ?>
 <h1><?php echo $title; ?></h1>
+
+<section id="home-p" class="wrapper">
+
+        <h2>Ici vous pouvez trouver toutes <span>les nouvelles</span> sur notre <span>forum de modélisme</span>.</h2>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make atype specimen book. It has survived not only five centuries.</p>
+</section>
 	<?php if( have_posts() ) : while( have_posts() ) : the_post(); ?>
   
 		<article class="post">

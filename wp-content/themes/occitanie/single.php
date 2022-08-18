@@ -2,7 +2,7 @@
 <?php get_header(); 
   if( have_posts() ) : while( have_posts() ) : the_post(); ?>
     
-    <article class="post">
+    <article class="post wrapper">
       <?php the_post_thumbnail(); ?>
 
       <h1><?php the_title(); ?></h1>
@@ -23,5 +23,5 @@
     </article>
 
   <?php endwhile; endif; ?>
-  <?php get_template_part( 'parts/newsletter' ); ?>
+  <?php //get_template_part( 'parts/newsletter' ); ?>
 <?php get_footer(); ?>

@@ -18,7 +18,9 @@
                 $categories = get_categories();
 
                 foreach($categories as $category) {
-                    echo '<p>' . $category->name . '</p>';
+                    if($category->name != "Modelisme") {
+                       echo '<p>' . $category->name . '</p>'; 
+                    }
                 } ?>
             </div>
 
