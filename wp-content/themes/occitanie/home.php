@@ -19,6 +19,7 @@ get_header(); ?>
         $title = 'Le Forum de Modelisme';
     }
 ?>
+<!-- Page Title -->
 <h1><?php echo $title; ?></h1>
 
 <section id="home-p" class="wrapper">
