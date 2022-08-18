@@ -15,11 +15,11 @@
         'orderby' => 'name',
         'order'   => 'ASC'
     ) );
-
     
     // echo '<pre>'; print_r($compets); echo '</pre>';
     // echo '<pre>'; print_r($cat_id); echo '</pre>';
 
+    /* Header */
     get_header(); 
 ?>
 
@@ -34,9 +34,9 @@
     </div>
 
 	<div class="home-title-wrapper">
+        <!-- Banner title -->
 		<span class="home-title">Modélisme Interdépartemental de l’Occitanie</span>
 	</div>
-    
     <?php endif; ?>
 
     <section id="home-p" class="wrapper">
@@ -45,6 +45,7 @@
 
         <div class="home-aside-wrapper">
             <div class="home-grid">
+                <!-- Categories and respectives competitions names flex -->
                 <?php for( $i = 0; $i < count($cat_id); $i++ ): ?>
                     <div>
                     <?php if($cat_id[$i]->id == 1) {?>
@@ -77,11 +78,13 @@
                 <?php endfor ?>
         </div>
 
+        <!-- Sidebar -->
         <?php get_sidebar(); ?>
         </div>
     </section>
 
     <section id="home-images-grid" class="wrapper">
+        <!-- Modelisme types grid -->
         <h2>Les types de modélisme</h2>
         <div class="home-articles-grid">
         <?php 
@@ -98,12 +101,10 @@
 
     </section>
 
-<?php 
-    get_template_part( 'parts/banner' ); 
-?>
+    <!-- End of page banner -->
+    <?php get_template_part( 'parts/banner' ); ?>
 
 </main>
 
-<?php     
-    get_footer(); 
-?>
+<!-- Footer -->
+<?php get_footer(); ?>
