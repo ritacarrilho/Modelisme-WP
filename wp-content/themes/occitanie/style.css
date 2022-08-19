@@ -215,26 +215,33 @@ nav {
      }
 
 /* CLUBS PAGE */
-
-    .clubs-grid {
-        display: grid;
-        justify-content: space-around;
-        align-items: stretch;
-        grid-template-rows: 22vw 22vw ;
-    }
+.clubs-grid {
+    display: grid;
+    justify-content: center;
+    /* align-items: stretch; */
+    grid-template-columns: 22vw 22vw;
+}
 
 .card-wrapper {
     padding: 15px;
     border: 1px solid var(--light-grey);
 }
 
+    .p-padding-bottom {
+        padding-bottom: 5px !important;
+    }
+
 /* COMPETITIONS PAGE */ 
 #points-padding {
-    padding-bottom: 5px !important;
+    padding-bottom: 3px !important;
 }
 
 #h5-points {
     padding-top: 15px;
+}
+
+.h4-padding-top {
+    padding-top: 25px;
 }
 
 /* POSTS PAGE */
