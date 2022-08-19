@@ -21,7 +21,7 @@ class Modelisme_Database_service
         // insert the value if the table is empty
         if ( $count_categories == 0 ) {
             $wpdb->insert( "{$wpdb->prefix}categories", [
-                 'name' => 'Course d’automobiles radio commandées',
+                 'name' => 'Modélisme Automobile',
             ] );
             $wpdb->insert( "{$wpdb->prefix}categories", [
                  'name' => 'Modélisme Aérien'

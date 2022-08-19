@@ -155,6 +155,7 @@ nav {
 #home-p {
     color: var(--medium-grey);
     text-align: center;
+    padding-bottom: 35px;
 }
 
     #home-p h2 {
@@ -212,6 +213,29 @@ nav {
      .home-aside-wrapper {
         display: flex;;
      }
+
+/* CLUBS PAGE */
+
+    .clubs-grid {
+        display: grid;
+        justify-content: space-around;
+        align-items: stretch;
+        grid-template-rows: 22vw 22vw ;
+    }
+
+.card-wrapper {
+    padding: 15px;
+    border: 1px solid var(--light-grey);
+}
+
+/* COMPETITIONS PAGE */ 
+#points-padding {
+    padding-bottom: 5px !important;
+}
+
+#h5-points {
+    padding-top: 15px;
+}
 
 /* POSTS PAGE */
 

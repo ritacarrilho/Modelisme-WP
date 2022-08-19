@@ -45,7 +45,7 @@
 
         <div class="home-aside-wrapper">
             <div class="home-grid">
-                <!-- Categories and respectives competitions names flex -->
+                <!-- Categories and each competitions names flex -->
                 <?php for( $i = 0; $i < count($cat_id); $i++ ): ?>
                     <div>
                     <?php if($cat_id[$i]->id == 1) {?>
