@@ -219,7 +219,7 @@ nav {
     display: grid;
     justify-content: center;
     /* align-items: stretch; */
-    grid-template-columns: 22vw 22vw;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .card-wrapper {
