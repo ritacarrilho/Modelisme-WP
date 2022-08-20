@@ -190,7 +190,7 @@ class WP_Widget_Weather extends WP_Widget
 
 
 // Creating the widget
-class wpb_widget extends WP_Widget {
+class posts_info_widget extends WP_Widget {
  
     function __construct() {
     parent::__construct(
@@ -199,15 +199,14 @@ class wpb_widget extends WP_Widget {
     'wpb_widget', 
      
     // Widget name will appear in UI
-    __('WPBeginner Widget', 'wpb_widget_domain'), 
+    __('WPPosts Widget', 'wpb_widget_domain'), 
      
     // Widget description
-    array( 'description' => __( 'Sample widget based on WPBeginner Tutorial', 'wpb_widget_domain' ), )
+    array( 'description' => __( 'Posts sidebarwidget', 'wpb_widget_domain' ), )
     );
     }
      
     // Creating widget front-end
-     
     public function widget( $args, $instance ) {
     $title = apply_filters( 'widget_title', $instance['title'] );
      
@@ -253,3 +252,7 @@ function wpb_load_widget() {
     register_widget( 'wpb_widget' );
 }
 add_action( 'widgets_init', 'wpb_load_widget' );
+
+
+
+/*  */

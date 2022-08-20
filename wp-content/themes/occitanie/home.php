@@ -48,6 +48,10 @@ get_header(); ?>
 
 	<?php endwhile; endif; ?>
 
+    <aside>
+    <?php get_sidebar(); ?>
+    </aside>
+
 <?php get_template_part( 'newsletter' ); ?>
 
 <?php get_footer(); ?>

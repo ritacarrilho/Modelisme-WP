@@ -22,6 +22,10 @@
       </div>
     </article>
 
+    <aside>
+    <?php get_sidebar(); ?>
+    </aside>
+
   <?php endwhile; endif; ?>
   <?php //get_template_part( 'parts/newsletter' ); ?>
 <?php get_footer(); ?>
