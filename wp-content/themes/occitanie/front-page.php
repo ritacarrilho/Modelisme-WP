@@ -79,7 +79,7 @@
         </div>
 
         <!-- Sidebar -->
-        <?php get_sidebar(); ?>
+        <?php get_sidebar('compets-sidebar'); ?>
         </div>
     </section>
 

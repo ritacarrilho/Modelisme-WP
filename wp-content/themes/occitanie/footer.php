@@ -1,5 +1,4 @@
-    <?php require('wp-load.php'); 
-    global $wpdb; ?>
+    <?php require('wp-load.php'); ?>
     <footer>
         <?php wp_footer();  // recover scripts and styles
         ?>

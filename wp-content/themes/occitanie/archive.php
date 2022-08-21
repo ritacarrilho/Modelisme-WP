@@ -1,6 +1,12 @@
 <!-- Single Post type items Template -->
-<?php get_header(); 
-  if( have_posts() ) : while( have_posts() ) : the_post(); ?>
+<?php 
+/* 
+Template Name: Archives
+*/
+
+get_header(); 
+
+if( have_posts() ) : while( have_posts() ) : the_post(); ?>
   
   <section class="posts-section-flex">
     <div class="posts-wrapper">
@@ -32,6 +38,7 @@
     </aside>
 </section>
 
+<!-- previous and next post buttons -->
 <section class="posts-arrow wrapper">
   <div> 
       <?php previous_post_link(); ?>

@@ -1,6 +1,6 @@
 <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-    <?php if( is_home() || is_single() ) : ?>
-      <h4>Recent Posts</h4>
+    <?php if( is_home() || is_single() || is_category() || is_archive()) : ?>
+      <h4>Posts Recents</h4>
           <ol class="list-unstyled">
 <?php 
           $recent_posts = wp_get_recent_posts(array(
@@ -28,19 +28,21 @@
 <!-- display categories -->
         <h4>Catégories</h4>
         <ol class="list-unstyled">
-        <?php $categories = get_categories();
+<?php
+        $categories = get_categories();
           foreach($categories as $category) {
             echo '<li><a href="' . get_category_link($category->term_id) . '"><p>' . $category->name . '</a></p></li>';
-          } ?>
+          } 
+?>
         </ol>
+<?php endif; ?>
 
-<!--    positionner mon emplacement de widget    -->
-        <?php
-            if( is_active_sidebar( 'modelisme_widget' )) :
-                dynamic_sidebar('modelisme_widget');
-            endif;
-        ?>
+<!-- get posts-sidebars -->
+<?php
+        if(is_home()  || is_single() || is_category() || is_archive()) {
+          dynamic_sidebar('posts-sidebar');
+        }
+?>
     </div>
-    <?php endif; ?>
-
+    
 </div>
