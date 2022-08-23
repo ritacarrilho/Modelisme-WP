@@ -3,6 +3,9 @@
 /wp-content/languages/
 /wp-content/plugins/index.php
 /wp-content/plugins/akismet
+/wp-content/plugins/woocommerce
+/wp-content/plugins/woocommerce-payments
+/wp-content/plugins/woocommerce-services
 /wp-content/plugins/all-in-one-wp-security-and-firewall
 /wp-content/plugins/fakerpress
 /wp-content/themes/twentytwenty/

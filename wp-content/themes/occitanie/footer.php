@@ -11,16 +11,15 @@
             </div>
 
             <div class="footer-info-element">
-                <h4>Nous Modélismes</h4>
             <?php 
-                // get all posts categories
-                $categories = get_categories();
 
-                foreach($categories as $category) {
-                    if($category->name != "Modelisme") {
-                       echo '<p>' . $category->name . '</p>'; 
-                    }
-                } ?>
+                if(is_active_sidebar('footer-sidebar')) {?>
+                    <aside>
+                        <?php dynamic_sidebar('footer-sidebar'); ?>
+                    </aside>
+                    
+                 <?php 
+                }?>
             </div>
 
             <div class="footer-info-element">

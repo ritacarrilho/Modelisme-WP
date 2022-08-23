@@ -38,6 +38,7 @@ add_theme_support( 'title-tag' );
 // add_image_size( 'products', 800, 600, false );
 // add_image_size( 'square', 256, 256, false );
 
+/* STYLECHEETS ANS SCRIPTS */
 function occitanie_theme_script() // add style and script files
 { 
     wp_register_style('main_style', get_template_directory_uri() . '/style.css', [], true); // style css link
@@ -52,6 +53,7 @@ function occitanie_theme_script() // add style and script files
 
 add_action('wp_enqueue_scripts', 'occitanie_theme_script');
 
+/* MENUS */
 function register_menu() // instanciate a menu reference
 {
     // adds a submenu to the wp-admin interface 
@@ -65,7 +67,7 @@ function register_menu() // instanciate a menu reference
 
 add_action('init', 'register_menu'); // menu hook
 
-// Register sidebars
+/* SIDE BARS */
 function register_sidebars_modelisme() {
     // posts sidebar
     register_sidebar( array(
@@ -100,12 +102,75 @@ function register_sidebars_modelisme() {
 
 add_action( 'widgets_init', 'register_sidebars_modelisme' ); // Hook the widget initiation and run the function
 
-// // footer
-// function footer() {
-//     $categories = ['Course d’automobiles radio commandées', 'Modélisme Aérien', 'Modélisme Naval'];
-//     return $categories;
-// }
+/* WIDGETS */
+class modelisme_widget extends WP_Widget {
 
-// add_action( 'wp_footer', 'footer' );
+    function __construct() {
+        parent::__construct( // widget processses
+            'modelisme_widget', // widget ID
+            __('Competitions Scores', 'modelisme_widget_domain'), // widget name
+            array ( 'description' => __( 'Les scores des competitions', 'modelisme_widget_domain' ), ) // widget description
+        );
+    }
 
-/*  */
+    public function widget( $args, $instance ) { // output the content of the widget
+        $title = apply_filters( 'widget_title', $instance['title'] );
+        echo $args['before widget'];
+
+        //if title is present
+        if ( ! empty ( $title ) )
+        echo $args['before_title'] . $title . $args['after_title'];
+        //output
+        echo __( 'Ici Competitions Scores', 'modelisme_widget_domain' );
+        echo $args['after_widget'];
+    }
+
+    public function form( $instance ) { // output the options form in the admin
+        if ( isset( $instance[ 'title' ] ) )
+        $title = $instance[ 'title' ];
+        else
+        $title = __( 'Default Title', 'modelisme_widget_domain' );
+        ?>
+        <p>
+        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+        </p>
+        <?php
+    }
+
+    public function update( $new_instance, $old_instance ) { // process widget options to be saved
+        $instance = array();
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        return $instance;
+    }
+}
+
+function modelisme_register_widget() { // register the widget
+    register_widget( 'modelisme_widget' );
+}
+    
+add_action( 'widgets_init', 'modelisme_register_widget' );
+
+
+/* Woocommerce */
+function modelisme_add_woocommerce_support() {
+    add_theme_support( 'woocommerce', array(
+        'thumbnail_image_width' => 150,
+        'single_image_width'    => 300,
+
+        'product_grid'          => array(
+            'default_rows'    => 3,
+            'min_rows'        => 2,
+            'max_rows'        => 8,
+            'default_columns' => 3,
+            'min_columns'     => 2,
+            'max_columns'     => 5,
+        ),
+    ) );
+}
+
+add_action( 'after_setup_theme', 'modelisme_add_woocommerce_support' );
+
+add_theme_support( 'wc-product-gallery-zoom' );
+add_theme_support( 'wc-product-gallery-lightbox' );
+add_theme_support( 'wc-product-gallery-slider' );

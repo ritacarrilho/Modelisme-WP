@@ -79,7 +79,12 @@
         </div>
 
         <!-- Sidebar -->
-        <?php get_sidebar('compets-sidebar'); ?>
+    <?php if(is_active_sidebar('compets-sidebar')) {?>
+            <aside>
+                <?php dynamic_sidebar('compets-sidebar'); ?>
+            </aside>
+                    
+    <?php }?>
         </div>
     </section>
 
