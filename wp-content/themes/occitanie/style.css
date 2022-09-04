@@ -366,3 +366,48 @@ footer h4 {
 }
 
 /* Woocommerce */ 
+.standard-promo {
+    display: -ms-grid;
+    display: grid;
+  }
+  
+.promo-card {
+    text-decoration: none;
+    padding: 16px;
+    margin-bottom: 20px;
+    /* Element */
+    /* Modifiers */
+  }
+  
+  .promo-card:hover {
+    text-decoration: underline;
+  }
+  
+  .promo-card__body {
+    max-width: 70%;
+  }
+  
+  .promo-card--gray {
+    background-color: #f2f3f5;
+  }
+  
+  .promo-card--women {
+    background-image: url("../images/female.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: calc(100% - -50px);
+  }
+  
+  .promo-card--men {
+    background-image: url("../images/male.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: calc(100% - -30px);
+  }
+  
+  /* Shop Section */
+  .shop-section__heading, .shop-section__body {
+    text-align: center;
+  }
+
+

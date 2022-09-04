@@ -25,8 +25,11 @@ $res = array_intersect($all_clubs_id, $clubs_with_members_id);
 ?>
 
 <main class="clubs">
+<h2 style="padding-bottom: 35px;">Voici les <span>clubs inscrits</span> au modelisme.</h2>
+
     <section id="home-p" class="wrapper">
-        <h2 style="padding-bottom: 35px;">Voici les <span>clubs participants</span> à nos compétitions.</h2>
+        <h3>Clubs participants</h3>
+
 
         <div class="clubs-grid">
             <?php 
@@ -57,12 +60,12 @@ $res = array_intersect($all_clubs_id, $clubs_with_members_id);
         </div>
     </section>
 
-    <!-- <section>
-        <h2>Clubs non participants</h2>
+    <section>
+        <h3>Clubs non participants</h3>
 
         <div>
             <?php 
-            /* if(isset($clubs)) :
+            if(isset($clubs)) :
                 foreach($clubs as $club) :?>
                     <?php if($club->participant == 0) { ?>
                         <div>
@@ -80,8 +83,8 @@ $res = array_intersect($all_clubs_id, $clubs_with_members_id);
                         } ?>
                         </div>
             <?php endforeach; 
-            endif; */ ?>         
+            endif;  ?>         
         </div>
-    </section> -->
+    </section>
 
 </main>
