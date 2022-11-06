@@ -427,14 +427,12 @@ class Modelisme_Database_service
 // FIND ALL COMPETITIONS
     public function findCompetitions() {
         global $wpdb;        
-        // var_dump($id);
+
         $result = $wpdb->get_results("SELECT {$wpdb->prefix}competitions.*, {$wpdb->prefix}categories.id as category_id, {$wpdb->prefix}categories.name as category_name 
                                             FROM {$wpdb->prefix}competitions 
                                             JOIN {$wpdb->prefix}categories 
                                             ON {$wpdb->prefix}competitions.category_id = {$wpdb->prefix}categories.id 
                                     ;");
-
-    // echo '<pre>'; var_dump($result); echo '</pre>';
         return $result;
     }
 
