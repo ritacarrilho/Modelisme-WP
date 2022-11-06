@@ -431,8 +431,8 @@ class Modelisme_Database_service
         $result = $wpdb->get_results("SELECT {$wpdb->prefix}competitions.*, {$wpdb->prefix}categories.id as category_id, {$wpdb->prefix}categories.name as category_name 
                                             FROM {$wpdb->prefix}competitions 
                                             JOIN {$wpdb->prefix}categories 
-                                            ON {$wpdb->prefix}competitions.category_id = {$wpdb->prefix}categories.id 
-                                    ;");
+                                            ON {$wpdb->prefix}competitions.category_id = {$wpdb->prefix}categories.id ;");
+        
         return $result;
     }
 
