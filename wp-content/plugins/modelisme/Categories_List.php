@@ -34,7 +34,6 @@ class Categories_List extends WP_List_Table
 
         // data
         $data = $this->dal->findAll('categories');
-        // var_dump($data);
         $total_pages = count($data); 
 
         // tri 
@@ -51,7 +50,6 @@ class Categories_List extends WP_List_Table
     }
 
     public function column_default($item, $column_name) {
-        // var_dump($column_name);
         switch($column_name) {
             case 'id':
             case 'name':
