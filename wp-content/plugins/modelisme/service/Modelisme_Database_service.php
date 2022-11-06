@@ -6,6 +6,39 @@ class Modelisme_Database_service
     public static function create_db()
     {
         global $wpdb;
+        
+// TABLE COMPETITIONS
+        $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
+                            "{$wpdb->prefix}competitions ( " . 
+                            "id INT AUTO_INCREMENT PRIMARY KEY, " . 
+                            "name VARCHAR(255) NOT NULL, " .
+                            "total_courses INT(10) NOT NULL, " . 
+                            "category_id INT NOT NULL " . 
+                            ");"
+        );
+
+        $count_categories = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}competitions;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
+
+        // insert the value if the table is empty
+        if ( $count_categories == 0 ) {
+            $wpdb->insert( "{$wpdb->prefix}competitions", [
+                 'name' => 'Course de modèles réduits automobiles à moteurs thermiques',
+                 'total_courses' => 10,
+                 'category_id' => 1
+            ] );
+            
+            $wpdb->insert( "{$wpdb->prefix}competitions", [
+                'name' => 'Course de drones à 3 rotors',
+                'total_courses' => 15,
+                'category_id' => 2
+           ] );
+
+           $wpdb->insert( "{$wpdb->prefix}competitions", [
+            'name' => 'Course de drones à 4 rotors',
+            'total_courses' => 15,
+            'category_id' => 2
+            ] );
+        }
 
 // TABLE CATEGORIES
         // database creation request execution
@@ -64,39 +97,7 @@ class Modelisme_Database_service
        ] );
         }
 
-// TABLE COMPETITIONS
-        $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
-                            "{$wpdb->prefix}competitions ( " . 
-                            "id INT AUTO_INCREMENT PRIMARY KEY, " . 
-                            "name VARCHAR(255) NOT NULL, " .
-                            "total_courses INT(10) NOT NULL, " . 
-                            "category_id INT NOT NULL " . 
-                            ");"
-        );
 
-        $count_categories = $wpdb->get_var("SELECT count(*) FROM {$wpdb->prefix}competitions;"); // count all existing rows and avoids to create the table each time we deactivate and activate the plugin if it already exists
-
-        // insert the value if the table is empty
-        if ( $count_categories == 0 ) {
-            $wpdb->insert( "{$wpdb->prefix}competitions", [
-                 'name' => 'Course de modèles réduits automobiles à moteurs thermiques',
-                 'total_courses' => 10,
-                 'category_id' => 1
-            ] );
-            
-            $wpdb->insert( "{$wpdb->prefix}competitions", [
-                'name' => 'Course de drones à 3 rotors',
-                'total_courses' => 15,
-                'category_id' => 2
-           ] );
-
-           $wpdb->insert( "{$wpdb->prefix}competitions", [
-            'name' => 'Course de drones à 4 rotors',
-            'total_courses' => 15,
-            'category_id' => 2
-            ] );
-       
-        }
 
 // TABLE CLUBS
         $wpdb->query( "CREATE TABLE IF NOT EXISTS ". 
