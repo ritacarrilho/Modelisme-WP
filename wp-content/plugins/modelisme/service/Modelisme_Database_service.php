@@ -591,11 +591,7 @@ public function findPointsCompetitions() {
             'category_id' => $_POST['category_id'],
         ];
 
-        // $row = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}categories WHERE category_name=" . $values['category_name'] . ";");
-
-        // if(is_null($row)) {
-            $wpdb->insert("{$wpdb->prefix}competitions", $values);
-        // }
+        $wpdb->insert("{$wpdb->prefix}competitions", $values);
     }
 
 // SAVE RANK
